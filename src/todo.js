@@ -33,10 +33,10 @@ export function toDo(title, description, dueDate, priority){
             return _dueDate;
         },
         set dueDate(newDate){
-            if (newDate instanceof Date){
+            if (typeof newDate === 'string'){
                 _dueDate = newDate;
             }
-            else{console.log("Due date must be a Date object!")}
+            else{console.log("Due date must be a string!")}
         },
 
         get priority(){

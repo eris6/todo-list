@@ -13,6 +13,11 @@ export const manager = (function () {
         allProjects.forEach((project) => console.log(project.name))
     }
 
+    const getActiveProject = () => {
+        console.log("Active Project: " + activeProject.name);
+    }
+
+
     const assignActiveProject = (projectName) => {
         for (let i = 0; i < allProjects.length; i++){
             if (allProjects[i].name === projectName){
@@ -24,11 +29,11 @@ export const manager = (function () {
                 } 
             }
         }
-        console.log("Active Project: " + activeProject.name);
+        getActiveProject();
     }
 
 
-    return {addProject, listProjects, assignActiveProject};
+    return {addProject, listProjects, assignActiveProject, getActiveProject};
 
 
 
