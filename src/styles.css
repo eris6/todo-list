@@ -5,6 +5,8 @@
   --background-color: #17153B;
   --project-background: #2E236C;
   --active-color: #C8ACD6;
+  --item-color: #433D8B;
+  --red-color: #e06666ff;
 }
 
 body {
@@ -20,6 +22,7 @@ body {
     width: 100vw;
     height: 100vh;
     padding-left: 2vw;
+    margin-top: 3vh;
   }
 
   #projects{
@@ -37,7 +40,7 @@ body {
 
   }
 
-  .project-head, .header-name, #add-project{
+  .project-head, .header-name, #add-project, .task-item-title, .priority-button{
     font-family: "Roboto", sans-serif;
     font-weight: 100;
     color: white;
@@ -85,9 +88,108 @@ body {
     height: auto;
   } 
 
+  #tasks{
+    overflow: scroll;
+    justify-content: center;
+    align-items: center;    
+  }
 
-  /* @media only screen and (max-width: 600) {
-    .project-head{
-      font-size: 0.5rem;
+  .task-item{
+    width: 80%;
+    height: 40%;
+    margin-left: 10%;
+    margin-bottom: 5vh;
+    background-color: var(--item-color);
+    border-radius: 15px;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+  }
+
+  .item-closer > img{
+    filter: invert(100%) sepia(0%) saturate(7437%) hue-rotate(118deg) brightness(101%) contrast(113%);
+    display: flex;
+    float: right;
+    margin-top: 1%;
+    margin-right: 1%;
+    
+  }
+
+  .item-closer > img:hover{
+    cursor: pointer;
+  }
+
+  .task-item-title{
+    margin-top: 1%;
+    font-size: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .task-item-description{
+    background-color: var(--active-color);
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    width: 70%;
+    padding-top: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    height: 30%;
+    margin-top: 3%;
+    overflow: scroll;
+    color: #FFFFFF;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  .task-item-bottom-row{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+  }
+
+  .priority-button{
+    background-color: var(--red-color);
+    width: 70%;
+    height: 80%;
+    align-content: center;
+    text-align: center;
+    margin-top: 7%;
+    border-radius: 15px;
+    font-weight: 500;
+  }
+
+  .priority-button:hover{
+    cursor: pointer;
+  }
+
+  .edit-check-buttons{
+    display: flex;
+    gap: 10%;
+    padding-top: 5%;
+  }
+
+  .edit-button > img:hover, .check-box > img:hover{
+    cursor: pointer;
+  }
+
+
+
+  @media only screen and (min-width: 1200px) {
+    .task-item{
+      height: 50%;
     }
-  } */
+  }
+
+  
+  @media only screen and (max-width: 750px) {
+    .task-item{
+      height: 30%;
+    }
+  }
+  
+
+  
