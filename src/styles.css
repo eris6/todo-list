@@ -7,6 +7,7 @@
   --active-color: #C8ACD6;
   --item-color: #433D8B;
   --red-color: #e06666ff;
+  --green-color: #00ab41;
 }
 
 body {
@@ -40,7 +41,8 @@ body {
 
   }
 
-  .project-head, .header-name, .add-project, .task-item-title, .priority-button, #add-task-button{
+  .project-head, .header-name, .add-project, .task-item-title, .priority-button, #add-task-button
+  ,.new-project-confirm, .project-input{
     font-family: "Roboto", sans-serif;
     font-weight: 100;
     color: white;
@@ -59,6 +61,46 @@ body {
     justify-content: space-around;
     align-items: center;
   }
+
+  .new-project-confirm{
+    font-weight: 300;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5%;
+    font-size: clamp(0.5rem, 2vw, 2rem);
+    margin-bottom: 10%;
+  }
+
+  .new-project-name{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .project-input{
+    width: 80%;
+    margin-bottom: 5%;
+    background-color: var(--active-color);
+    border: none;
+    border-radius: 15px;
+    font-size: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .confirm-project{
+    background-color: var(--green-color);
+    padding: 5%;
+    border-radius: 15px;
+  }
+
+  .cancel-project{
+    background-color: var(--red-color);
+    padding: 5%;
+    border-radius: 15px;
+  }
+
+  .confirm-project:hover{cursor: pointer;}
+  .cancel-project:hover{cursor: pointer;}
+
 
   .add-project:hover{
     cursor: pointer;
