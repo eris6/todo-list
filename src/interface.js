@@ -13,6 +13,8 @@ export function generateProjects(){
 
     projectHeader.addEventListener('click', () =>{
         console.log(projectList[i].name);
+        projectList[i].printToDoItems();
+        console.log('booba');
     })
     }
 
