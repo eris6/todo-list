@@ -40,27 +40,27 @@ body {
 
   }
 
-  .project-head, .header-name, #add-project, .task-item-title, .priority-button{
+  .project-head, .header-name, .add-project, .task-item-title, .priority-button, #add-task-button{
     font-family: "Roboto", sans-serif;
     font-weight: 100;
     color: white;
     text-align: center;
   }
-  .project-head, #add-project{
+  .project-head, .add-project{
     font-size: clamp(1rem, 2.5vw, 2rem);
     margin-bottom: 5vh;
     padding-top: 2vh;
     padding-bottom: 2vh;
   }
 
-  #add-project{
+  .add-project{
     background-color: var(--active-color);
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
 
-  #add-project:hover{
+  .add-project:hover{
     cursor: pointer;
     background-color: var(--background-color);
   }
@@ -76,14 +76,12 @@ body {
     border-radius: 5px;
   }
 
-  #add-project > img{
+  .add-project-button, .sisyphus-logo, .item-closer > img, .add-task > img, .edit-check-buttons{
     filter: invert(100%) sepia(0%) saturate(7437%) hue-rotate(118deg) brightness(101%) contrast(113%);
 
   }
-
  
   .sisyphus-logo{
-    filter: invert(100%) sepia(0%) saturate(7437%) hue-rotate(118deg) brightness(101%) contrast(113%);
     width: 50%;
     height: auto;
   } 
@@ -107,7 +105,6 @@ body {
   }
 
   .item-closer > img{
-    filter: invert(100%) sepia(0%) saturate(7437%) hue-rotate(118deg) brightness(101%) contrast(113%);
     display: flex;
     float: right;
     margin-top: 1%;
@@ -168,7 +165,7 @@ body {
 
   .edit-check-buttons{
     display: flex;
-    gap: 10%;
+    gap: 5%;
     padding-top: 5%;
   }
 
@@ -176,6 +173,29 @@ body {
     cursor: pointer;
   }
 
+
+  .add-task{
+    width: 80%;
+    height: 10%;
+    margin-left: 10%;
+    margin-bottom: 5vh;
+    background-color: var(--active-color);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .add-task:hover{
+    cursor: pointer;
+    background-color: var(--project-background);
+  }
+
+
+  #add-task-button{
+    font-size: clamp(30px, 4.5vw, 5rem);
+    font-weight: 300;
+  }
 
 
   @media only screen and (min-width: 1200px) {

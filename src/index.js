@@ -3,12 +3,22 @@ import { toDo } from "./todo.js";
 import { project } from "./project.js";
 import { manager } from "./manager.js";
 import { format } from 'date-fns';
+import { generateProjects } from "./interface.js";
 
 // Set up default projects
 const allTasks = project("All Tasks");
 const todayProject = project("Today");
 const upcomingProjects = project("Upcoming");
 const completedProjects = project("Completed");
+
+
+const projectList = [];
+projectList.push(allTasks);
+projectList.push(todayProject);
+projectList.push(upcomingProjects);
+projectList.push(completedProjects);
+
+
 
 
 //Get today's date
@@ -52,5 +62,10 @@ const newProject = document.querySelector("#add-project");
 newProject.addEventListener('click', () => {
     console.log('Add New project clicked!');
 })
+
+generateProjects();
+
+export { projectList };
+
 
 
