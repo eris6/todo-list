@@ -1,7 +1,13 @@
 import { projectList } from "./index.js";
 import { project } from "./project.js";
+import { manager } from "./manager.js";
+
 import plusButtonPath from "./icons/plus-circle-outline.svg";
-import sisyphusPath from "./icons/sisyphus.svg"
+import sisyphusPath from "./icons/sisyphus.svg";
+import deletePath from "./icons/delete-1-svgrepo-com.svg";
+import editPath from "./icons/edit-tool-pencil-svgrepo-com.svg";
+import checkPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
+
 
 export function generateProjects(){
     const projectDom = document.querySelector("#projects");
@@ -32,7 +38,22 @@ export function generateProjects(){
 
     projectHeader.addEventListener('click', () =>{
         console.log(projectList[i].name);
-        projectList[i].printToDoItems();
+
+        let clickedProjectTasks = projectList[i].toDoList;
+
+        if (clickedProjectTasks.length > 0){
+            clickedProjectTasks.forEach((task) => generateTasks(task));
+        }
+        else{
+            const taskDom = document.querySelector("#tasks");
+            taskDom.innerHTML = '';
+        }
+
+        
+        
+
+
+
     })
     }
 
@@ -101,18 +122,89 @@ export function generateProjects(){
 
         if (projectInput.value !== ""){
             const addedProject = project(projectInput.value);
-            projectList.push(addedProject);
+            manager.addProject(addedProject);
 
-            for (let i = 0; i < projectList.length; i++){
-                console.log(projectList[i].name);
-                
-            }
+            manager.listProjects();
         }
-
-        
         generateProjects();
     })
-
-
-
 }
+
+
+export function generateTasks(task){
+    if (task.title !== ""){
+        const taskDom = document.querySelector("#tasks");
+    const taskItem = document.createElement("div");
+    taskItem.classList.add("task-item");
+    
+    taskDom.appendChild(taskItem);
+    
+    const itemCloser = document.createElement("div");
+    itemCloser.classList.add("item-closer");
+    taskItem.appendChild(itemCloser);
+    
+    const deleteButton = document.createElement("img");
+    deleteButton.src = deletePath;
+    deleteButton.alt = "icon for the minimize button";
+    deleteButton.height=36;
+    deleteButton.style.width="auto";
+    itemCloser.appendChild(deleteButton);
+    
+    
+    const itemTitle = document.createElement("div");
+    itemTitle.classList.add("task-item-title");
+    itemTitle.textContent = task.title;
+    taskItem.appendChild(itemTitle);
+    
+    const itemDescription = document.createElement("div");
+    itemDescription.classList.add("task-item-description");
+    itemDescription.textContent = task.description;
+    taskItem.appendChild(itemDescription);
+    
+    
+    const bottomRow = document.createElement("div");
+    bottomRow.classList.add("task-item-bottom-row");
+    taskItem.appendChild(bottomRow);
+    
+    const priorityButton = document.createElement("div");
+    priorityButton.classList.add("priority-button");
+    bottomRow.appendChild(priorityButton);
+    
+    const priorityDate = document.createElement("div");
+    priorityDate.classList.add("complete-by-text");
+    priorityButton.appendChild(priorityDate);
+    priorityDate.textContent=task.dueDate;
+    
+    
+    const editCheckButtons = document.createElement("div");
+    editCheckButtons.classList.add("edit-check-buttons");
+    bottomRow.appendChild(editCheckButtons);
+    
+    
+    const editButton = document.createElement("div");
+    editButton.classList.add("edit-button");
+    editCheckButtons.appendChild(editButton);
+    
+    const editImage = document.createElement("img");
+    editImage.src = editPath;
+    editImage.alt = "Icon of edit button";
+    editImage.height = 50;
+    editImage.style.width="auto";
+    editButton.appendChild(editImage);
+    
+    
+    const checkImage = document.createElement("img");
+    checkImage.src = checkPath;
+    checkImage.alt = "Icon of checkbox button";
+    checkImage.height = 50;
+    checkImage.style.width="auto";
+    editButton.appendChild(checkImage);
+    }
+  }
+  
+
+
+
+
+
+

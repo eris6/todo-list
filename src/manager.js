@@ -1,6 +1,6 @@
 import { projectList } from "./index.js";
 
-export const manager = (function () {
+export const manager = function () {
     const allProjects = [];
     let activeProject;
 
@@ -43,5 +43,5 @@ export const manager = (function () {
 
 
 
-})();
+}();
 

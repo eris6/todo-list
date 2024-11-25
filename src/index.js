@@ -3,7 +3,11 @@ import { toDo } from "./todo.js";
 import { project } from "./project.js";
 import { manager } from "./manager.js";
 import { format } from 'date-fns';
-import { generateProjects } from "./interface.js";
+import { generateProjects, generateTasks } from "./interface.js";
+import deletePath from "./icons/delete-1-svgrepo-com.svg";
+import editPath from "./icons/edit-tool-pencil-svgrepo-com.svg";
+import checkPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
+
 
 // Set up default projects
 const allTasks = project("All Tasks");
@@ -34,8 +38,10 @@ function getDate(month, date, year){
 
 // const exampleProjectOne = project("Example Project One");
 
-// const exampleToDoOne = toDo("Read Up to Pg. 56 of Crime & Punishment", "Make sure to highlight", currentDate, "HIGH");
-// const exampleToDoTwo = toDo("Read Up to Pg. 107 of Crime & Punishment", "Annotate closely", currentDate, "MEDIUM");
+const exampleToDoOne = toDo("Read Up to Pg. 56 of Crime & Punishment", "Make sure to highlight", currentDate, "HIGH");
+const exampleToDoTwo = toDo("Read Up to Pg. 107 of Crime & Punishment", "Annotate closely", currentDate, "MEDIUM");
+const exampleToDoThree = toDo("I DON'T BELIEVE IN YOU", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM");
+
 
 // exampleProjectOne.addToDo(exampleToDoOne);
 
@@ -64,6 +70,21 @@ newProject.addEventListener('click', () => {
 
 
 generateProjects();
+console.log("kzdfjgnlk-----------");
+manager.listProjects();
+
+allTasks.addToDo(exampleToDoOne);
+allTasks.addToDo(exampleToDoTwo);
+allTasks.addToDo(exampleToDoThree);
+
+// allTasks.toDoList.forEach((task) => generateTasks(task));
+
+
+// generateTasks(exampleToDoOne);
+// generateTasks(exampleToDoTwo);
+// generateTasks(exampleToDoThree);
+
+
 
 export { projectList };
 

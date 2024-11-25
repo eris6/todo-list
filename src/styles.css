@@ -41,7 +41,7 @@ body {
 
   }
 
-  .project-head, .header-name, .add-project, .task-item-title, .priority-button, #add-task-button
+  .project-head, .header-name, .add-project, .task-item-title, .priority-button, #add-task-button, .delete-project
   ,.new-project-confirm, .project-input{
     font-family: "Roboto", sans-serif;
     font-weight: 100;
@@ -232,6 +232,22 @@ body {
     cursor: pointer;
     background-color: var(--project-background);
   }
+
+  .delete-project{
+    width: 80%;
+    height: 10%;
+    margin-left: 10%;
+    margin-bottom: 5vh;
+    background-color: var(--red-color);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: clamp(30px, 4.5vw, 5rem);
+    font-weight: 300;
+  }
+
+  .delete-project:hover{cursor: pointer;}
 
 
   #add-task-button{

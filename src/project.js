@@ -9,5 +9,5 @@ export function project(name){
         toDoList.forEach((toDoItem) => toDoItem.printItem());
     }
 
-    return {name, addToDo, printToDoItems}
+    return {name, toDoList, addToDo, printToDoItems}
 }
