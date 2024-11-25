@@ -43,22 +43,10 @@ const exampleToDoTwo = toDo("Read Up to Pg. 107 of Crime & Punishment", "Annotat
 const exampleToDoThree = toDo("I DON'T BELIEVE IN YOU", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM");
 
 
-// exampleProjectOne.addToDo(exampleToDoOne);
-
-// exampleToDoOne.dueDate = getDate(11, 24, 2024);
-
-// const exampleProjectTwo = project("Example Project 2");
-// exampleProjectTwo.addToDo(exampleToDoTwo);
-
-// manager.addProject(exampleProjectOne);
-// manager.addProject(exampleProjectTwo);
-manager.addProject(allTasks);
-manager.addProject(todayProject);
-manager.addProject(upcomingProjects);
-manager.addProject(completedProjects);
 
 
-manager.listProjects();
+
+
 
 
 const newProject = document.querySelector("#add-project");
@@ -69,13 +57,26 @@ newProject.addEventListener('click', () => {
 
 
 
-generateProjects();
-console.log("kzdfjgnlk-----------");
+
+manager.addProject(allTasks);
+manager.addProject(todayProject);
+manager.addProject(upcomingProjects);
+manager.addProject(completedProjects);
+
+console.log("---------Listed Projects-----------");
 manager.listProjects();
+
+
+console.log('----figuring out active project issue--------------');
+// manager.setActiveProject(upcomingProjects);
+manager.getActiveProject();
+manager.setActiveProject(todayProject);
+manager.setActiveProject(upcomingProjects);
 
 allTasks.addToDo(exampleToDoOne);
 allTasks.addToDo(exampleToDoTwo);
-allTasks.addToDo(exampleToDoThree);
+todayProject.addToDo(exampleToDoThree);
+generateProjects();
 
 // allTasks.toDoList.forEach((task) => generateTasks(task));
 
@@ -84,7 +85,8 @@ allTasks.addToDo(exampleToDoThree);
 // generateTasks(exampleToDoTwo);
 // generateTasks(exampleToDoThree);
 
-
+// manager.assignActiveProject(allTasks);
+//  manager.getActiveProject();
 
 export { projectList };
 

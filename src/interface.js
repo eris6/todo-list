@@ -37,16 +37,40 @@ export function generateProjects(){
     projectDom.appendChild(projectHeader);
 
     projectHeader.addEventListener('click', () =>{
-        console.log(projectList[i].name);
+
+        manager.setActiveProject(projectList[i]);
+
+        let activeProject = manager.getActiveProject();
+
+
+        let projectChildren = projectDom.children;
+
+        for (let i = 0; i < projectChildren.length - 1; i++){
+            projectChildren[i].style.backgroundColor="#2E236C"; 
+        }
+        projectHeader.style.backgroundColor="#433D8B";
+        
+        
+
+              
+
+        const taskDom = document.querySelector("#tasks");
+        taskDom.innerHTML = '';
+
+
+        
+        
 
         let clickedProjectTasks = projectList[i].toDoList;
 
         if (clickedProjectTasks.length > 0){
             clickedProjectTasks.forEach((task) => generateTasks(task));
+            
         }
         else{
             const taskDom = document.querySelector("#tasks");
             taskDom.innerHTML = '';
+            
         }
 
         
@@ -120,6 +144,7 @@ export function generateProjects(){
         console.log("Add project clicked!!!");
         projectDom.innerHTML = "";
 
+
         if (projectInput.value !== ""){
             const addedProject = project(projectInput.value);
             manager.addProject(addedProject);
@@ -133,7 +158,7 @@ export function generateProjects(){
 
 export function generateTasks(task){
     if (task.title !== ""){
-        const taskDom = document.querySelector("#tasks");
+    const taskDom = document.querySelector("#tasks");
     const taskItem = document.createElement("div");
     taskItem.classList.add("task-item");
     

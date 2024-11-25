@@ -1,13 +1,15 @@
 import { projectList } from "./index.js";
+import { project } from "./project.js";
 
 export const manager = function () {
     const allProjects = [];
-    let activeProject;
+    let activeProject = null;
 
     const addProject = (project) => {
         if (typeof project.addToDo === 'function'){
             allProjects.push(project);
             projectList.push(project);
+
         }
         
     }
@@ -20,26 +22,22 @@ export const manager = function () {
     }
 
     const getActiveProject = () => {
+        if (activeProject === null){
+            activeProject = allProjects[0];
+            console.log(activeProject.name);
+        }
         console.log("Active Project: " + activeProject.name);
+        return activeProject;
     }
 
 
-    const assignActiveProject = (projectName) => {
-        for (let i = 0; i < allProjects.length; i++){
-            if (allProjects[i].name === projectName){
-                activeProject = allProjects[i];
-            }
-            else{
-                if (allProjects.length > 0){
-                    activeProject = allProjects[0];
-                } 
-            }
-        }
+    const setActiveProject = (project) => {
+        activeProject = project;
         getActiveProject();
     }
 
 
-    return {addProject, listProjects, assignActiveProject, getActiveProject};
+    return {addProject, listProjects, getActiveProject, setActiveProject};
 
 
 
