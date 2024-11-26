@@ -36,12 +36,44 @@ export function generateProjects(){
     projectHeader.textContent = projectList[i].name;
     projectDom.appendChild(projectHeader);
 
-    projectHeader.addEventListener('click', () =>{
+    if (manager.getActiveProject().name === "All Tasks"){
+        console.log("we good");
+        let projectChildren = projectDom.children;
+
+        projectChildren[0].style.backgroundColor="#2E236C"; 
+        
+        const taskDom = document.querySelector("#tasks");
+        taskDom.innerHTML = ''; 
+
+            }
+
+        const allTasksProject = projectList.find(p => p.name === "All Tasks");
+        if (allTasksProject) {
+            manager.setActiveProject(allTasksProject);
+    
+            let projectChildren = projectDom.children;
+            for (let i = 0; i < projectChildren.length - 1; i++) {
+                projectChildren[i].style.backgroundColor = "#2E236C";
+            }
+            const allTasksHeader = Array.from(projectDom.children).find(header => header.textContent === "All Tasks");
+            if (allTasksHeader) {
+                allTasksHeader.style.backgroundColor = "#433D8B";
+            }
+    
+            const taskDom = document.querySelector("#tasks");
+            taskDom.innerHTML = ''; 
+    
+            let allTasks = allTasksProject.toDoList;
+    
+            if (allTasks.length > 0) {
+                allTasks.forEach((task) => generateTasks(task));
+            }
+        }
+        
+
+    projectHeader.addEventListener('click', (event) =>{
 
         manager.setActiveProject(projectList[i]);
-
-        let activeProject = manager.getActiveProject();
-
 
         let projectChildren = projectDom.children;
 
@@ -50,16 +82,8 @@ export function generateProjects(){
         }
         projectHeader.style.backgroundColor="#433D8B";
         
-        
-
-              
-
         const taskDom = document.querySelector("#tasks");
-        taskDom.innerHTML = '';
-
-
-        
-        
+        taskDom.innerHTML = ''; 
 
         let clickedProjectTasks = projectList[i].toDoList;
 
@@ -70,14 +94,9 @@ export function generateProjects(){
         else{
             const taskDom = document.querySelector("#tasks");
             taskDom.innerHTML = '';
-            
         }
 
         
-        
-
-
-
     })
     }
 
@@ -157,7 +176,6 @@ export function generateProjects(){
 
 
 export function generateTasks(task){
-    if (task.title !== ""){
     const taskDom = document.querySelector("#tasks");
     const taskItem = document.createElement("div");
     taskItem.classList.add("task-item");
@@ -194,6 +212,50 @@ export function generateTasks(task){
     const priorityButton = document.createElement("div");
     priorityButton.classList.add("priority-button");
     bottomRow.appendChild(priorityButton);
+
+
+    if (task.priority === "LOW"){
+        priorityButton.style.backgroundColor = "#00ab41";
+        priorityButton.style.color="white";
+    }
+    else if (task.priority === "MEDIUM"){
+        priorityButton.style.color="black";
+        priorityButton.style.backgroundColor = "#FDFD96";
+
+    }
+    else if (task.priority === "HIGH"){
+        priorityButton.style.backgroundColor = "#e06666ff";
+        priorityButton.style.color = "white";
+    }
+
+
+    priorityButton.addEventListener('click', () =>{
+
+        console.log(priorityButton.style.backgroundColor);
+        if (priorityButton.style.backgroundColor === null){
+            console.log("it's null!");
+        }
+
+        console.log(task.priority);
+
+        if (task.priority === "LOW"){
+            task.priority = "MEDIUM";
+            priorityButton.style.backgroundColor = "#00ab41";
+            priorityButton.style.color="white";
+        }
+        else if (task.priority === "MEDIUM"){
+            task.priority = "HIGH";
+            priorityButton.style.color="black";
+            priorityButton.style.backgroundColor = "#FDFD96";
+
+        }
+        else if (task.priority === "HIGH"){
+            task.priority = "LOW";
+            priorityButton.style.backgroundColor = "#e06666ff";
+            priorityButton.style.color = "white";
+        }
+        
+})
     
     const priorityDate = document.createElement("div");
     priorityDate.classList.add("complete-by-text");
@@ -224,12 +286,4 @@ export function generateTasks(task){
     checkImage.height = 50;
     checkImage.style.width="auto";
     editButton.appendChild(checkImage);
-    }
-  }
-  
-
-
-
-
-
-
+}

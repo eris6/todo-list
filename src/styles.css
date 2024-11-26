@@ -191,7 +191,6 @@ body {
   }
 
   .priority-button{
-    background-color: var(--red-color);
     width: 70%;
     height: 80%;
     align-content: center;
