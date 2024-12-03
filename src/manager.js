@@ -41,7 +41,7 @@ export const manager = function () {
     }
 
 
-    return {addProject, listProjects, getActiveProject, setActiveProject, allProjects};
+    return {addProject, listProjects, getActiveProject, setActiveProject, allProjects, deleteProject};
 
 
 

@@ -151,6 +151,10 @@ export function generateProjects(){
         newProjecConfirm.appendChild(cancelProject);
         projectInput.focus();
     })
+    
+
+
+
 
     cancelProject.addEventListener('click', () =>{
         projectDom.removeChild(newProjectName);
@@ -223,7 +227,9 @@ function generateAddTaskButton(){
 }
 
 function genereateDeleteProjectButton(){
+    const activeProject = manager.getActiveProject();
     const taskDom = document.querySelector("#tasks");
+    const projectDom = document.querySelector("#projects");
 
     const deleteProjectButton = document.createElement("div");
     deleteProjectButton.classList.add("delete-project");
@@ -232,6 +238,17 @@ function genereateDeleteProjectButton(){
     deleteProjectText.classList.add("delete-project-text");
     deleteProjectText.textContent = "Delete Project"
     deleteProjectButton.appendChild(deleteProjectText);
+
+
+    deleteProjectButton.addEventListener('click', () => {
+        console.log("updated projects");
+        manager.listProjects();
+        manager.deleteProject(activeProject);
+        projectDom.innerHTML = "";
+        generateProjects();
+        console.log("updated projects");
+        manager.listProjects();
+    })
 
     taskDom.appendChild(deleteProjectButton);
 }
@@ -408,47 +425,7 @@ export function generateTasks(task){
                 else{
                     completedProject.removeToDo(task);
                 }
-        }
-
-        
-        // if (task.completed === false){
-        //     task.completed = true;
-        //     checkImage.src = uncheckPath;
-        //     // let completedProject;
-        //     // for (let i = 0; i < manager.allProjects.length; i++){
-        //     //     if (manager.allProjects[i].name === 'Completed'){
-        //     //         completedProject = manager.allProjects[i];
-                    
-        //     //         if (!completedProject.toDoList.includes(task)){
-        //     //             completedProject.addToDo(task);
-        //     //         }
-
-                    
-        //     //         const projectDom = document.querySelector("#projects");
-        //     //         projectDom.innerHTML = "";
-        //     //         generateProjects();
-        //     //     }
-        //     // } 
-        // }
-        // else{
-        //     task.completed = false;
-        //     checkImage.src = checkPath;
-            
-            
-        // }
-
-        // else{
-        //     task.completed = false;
-        //     checkImage.src = checkPath;
-            
-
-            
-        // }
-
-        
-        // if (checkImage.src === checkPath){
-        //     checkImage.src = uncheckPath;
-        // }
+        }        
     }
     })
 }
