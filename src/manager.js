@@ -1,4 +1,3 @@
-import { projectList } from "./index.js";
 import { project } from "./project.js";
 
 export const manager = function () {
@@ -8,14 +7,21 @@ export const manager = function () {
     const addProject = (project) => {
         if (typeof project.addToDo === 'function'){
             allProjects.push(project);
-            projectList.push(project);
-
         }
-        
+    }
+
+    const deleteProject = (project) => {
+        if (typeof project.addToDo === 'function'){
+            const allProjectsIdx = allProjects.indexOf(project);
+            if (allProjectsIdx > -1){
+                allProjects.splice(allProjectsIdx, 1);
+            }
+        }
     }
 
     const listProjects = () => {
         allProjects.forEach((project) => {
+            console.log("------------");
             console.log(project.name);
             project.printToDoItems();
         })
@@ -24,9 +30,7 @@ export const manager = function () {
     const getActiveProject = () => {
         if (activeProject === null){
             activeProject = allProjects[0];
-            console.log(activeProject.name);
         }
-        console.log("Active Project: " + activeProject.name);
         return activeProject;
     }
 
@@ -37,7 +41,7 @@ export const manager = function () {
     }
 
 
-    return {addProject, listProjects, getActiveProject, setActiveProject};
+    return {addProject, listProjects, getActiveProject, setActiveProject, allProjects};
 
 
 

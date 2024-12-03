@@ -1,4 +1,3 @@
-import { projectList } from "./index.js";
 import { project } from "./project.js";
 import { manager } from "./manager.js";
 
@@ -6,8 +5,8 @@ import plusButtonPath from "./icons/plus-circle-outline.svg";
 import sisyphusPath from "./icons/sisyphus.svg";
 import deletePath from "./icons/delete-1-svgrepo-com.svg";
 import editPath from "./icons/edit-tool-pencil-svgrepo-com.svg";
-import checkPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
-
+import uncheckPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
+import checkPath from "./icons/checkbox-check-svgrepo-com.svg"
 
 export function generateProjects(){
     const projectDom = document.querySelector("#projects");
@@ -30,14 +29,13 @@ export function generateProjects(){
     projectDom.appendChild(header);
 
 
-    for (let i = 0; i < projectList.length; i++){
+    for (let i = 0; i < manager.allProjects.length; i++){
     const projectHeader = document.createElement("div");
     projectHeader.classList.add("project-head");
-    projectHeader.textContent = projectList[i].name;
+    projectHeader.textContent = manager.allProjects[i].name;
     projectDom.appendChild(projectHeader);
 
-    if (manager.getActiveProject().name === "All Tasks"){
-        console.log("we good");
+    if (manager.getActiveProject().name === manager.getActiveProject().name){
         let projectChildren = projectDom.children;
 
         projectChildren[0].style.backgroundColor="#2E236C"; 
@@ -45,9 +43,9 @@ export function generateProjects(){
         const taskDom = document.querySelector("#tasks");
         taskDom.innerHTML = ''; 
 
-            }
+    }
 
-        const allTasksProject = projectList.find(p => p.name === "All Tasks");
+        const allTasksProject = manager.allProjects.find(p => p.name === manager.getActiveProject().name);
         if (allTasksProject) {
             manager.setActiveProject(allTasksProject);
     
@@ -55,7 +53,7 @@ export function generateProjects(){
             for (let i = 0; i < projectChildren.length - 1; i++) {
                 projectChildren[i].style.backgroundColor = "#2E236C";
             }
-            const allTasksHeader = Array.from(projectDom.children).find(header => header.textContent === "All Tasks");
+            const allTasksHeader = Array.from(projectDom.children).find(header => header.textContent === manager.getActiveProject().name);
             if (allTasksHeader) {
                 allTasksHeader.style.backgroundColor = "#433D8B";
             }
@@ -67,13 +65,14 @@ export function generateProjects(){
     
             if (allTasks.length > 0) {
                 allTasks.forEach((task) => generateTasks(task));
+                generateAddTaskButton();
             }
         }
         
 
     projectHeader.addEventListener('click', (event) =>{
 
-        manager.setActiveProject(projectList[i]);
+        manager.setActiveProject(manager.allProjects[i]);
 
         let projectChildren = projectDom.children;
 
@@ -85,15 +84,20 @@ export function generateProjects(){
         const taskDom = document.querySelector("#tasks");
         taskDom.innerHTML = ''; 
 
-        let clickedProjectTasks = projectList[i].toDoList;
+        let clickedProjectTasks = manager.allProjects[i].toDoList;
 
         if (clickedProjectTasks.length > 0){
             clickedProjectTasks.forEach((task) => generateTasks(task));
+            generateAddTaskButton();
             
         }
         else{
-            const taskDom = document.querySelector("#tasks");
-            taskDom.innerHTML = '';
+            generateAddTaskButton();
+
+            if (manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'
+        && manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name !== 'Today'){
+            genereateDeleteProjectButton();
+        }
         }
 
         
@@ -140,7 +144,6 @@ export function generateProjects(){
 
 
     addProject.addEventListener('click', () =>{
-        console.log("New Project Clicked !!");
         projectDom.appendChild(newProjectName);
         projectDom.appendChild(newProjecConfirm);
 
@@ -150,8 +153,6 @@ export function generateProjects(){
     })
 
     cancelProject.addEventListener('click', () =>{
-        console.log("cancel clciked");
-
         projectDom.removeChild(newProjectName);
         projectDom.removeChild(newProjecConfirm);
 
@@ -163,7 +164,6 @@ export function generateProjects(){
         console.log("Add project clicked!!!");
         projectDom.innerHTML = "";
 
-
         if (projectInput.value !== ""){
             const addedProject = project(projectInput.value);
             manager.addProject(addedProject);
@@ -171,8 +171,71 @@ export function generateProjects(){
             manager.listProjects();
         }
         generateProjects();
+
+        const recentProject = manager.allProjects[manager.allProjects.length - 1];
+
+        if (recentProject){
+            manager.setActiveProject(recentProject);
+            let recentChildren = projectDom.children;
+            for (let i = 0; i < recentChildren.length - 1; i++) {
+                recentChildren[i].style.backgroundColor = "#2E236C";
+            }
+
+            const recentProjectHeader = Array.from(projectDom.children).find(header => header.textContent === recentProject.name);
+            if (recentProjectHeader){
+                recentProjectHeader.style.backgroundColor = "#433D8B";
+            }
+
+            const taskDom = document.querySelector("#tasks");
+            taskDom.innerHTML = '';
+            generateAddTaskButton();
+            genereateDeleteProjectButton();
+        }
+    })
+
+    
+}
+
+function generateAddTaskButton(){
+    const taskDom = document.querySelector("#tasks");
+    const addTask = document.createElement("div");
+    addTask.classList.add("add-task");
+
+    const addTaskButton = document.createElement("div");
+    addTaskButton.id = 'add-task-button';
+    addTaskButton.textContent = "New Task";
+
+    addTask.appendChild(addTaskButton);
+
+    const plusButton = document.createElement("img");
+    plusButton.src = plusButtonPath;
+    plusButton.alt = "icon of a plus button inside a circle";
+    plusButton.height=50;
+    plusButton.style.width="auto"
+
+    addTask.appendChild(plusButton);
+    taskDom.appendChild(addTask);
+
+    addTask.addEventListener('click', () =>{
+        console.log("booba");
+
     })
 }
+
+function genereateDeleteProjectButton(){
+    const taskDom = document.querySelector("#tasks");
+
+    const deleteProjectButton = document.createElement("div");
+    deleteProjectButton.classList.add("delete-project");
+
+    const deleteProjectText = document.createElement("div");
+    deleteProjectText.classList.add("delete-project-text");
+    deleteProjectText.textContent = "Delete Project"
+    deleteProjectButton.appendChild(deleteProjectText);
+
+    taskDom.appendChild(deleteProjectButton);
+}
+
 
 
 export function generateTasks(task){
@@ -191,6 +254,23 @@ export function generateTasks(task){
     deleteButton.alt = "icon for the minimize button";
     deleteButton.height=36;
     deleteButton.style.width="auto";
+
+    deleteButton.addEventListener('click', () =>{
+        const projectDom = document.querySelector("#projects");
+        let currProject = manager.getActiveProject();
+        currProject.removeToDo(task);
+        currProject.printToDoItems();
+        projectDom.innerHTML = '';
+        generateProjects();
+        
+
+        if (taskDom.children.length === 0){
+            generateAddTaskButton();
+        }
+        
+
+    })
+
     itemCloser.appendChild(deleteButton);
     
     
@@ -217,6 +297,7 @@ export function generateTasks(task){
     if (task.priority === "LOW"){
         priorityButton.style.backgroundColor = "#00ab41";
         priorityButton.style.color="white";
+        
     }
     else if (task.priority === "MEDIUM"){
         priorityButton.style.color="black";
@@ -226,35 +307,26 @@ export function generateTasks(task){
     else if (task.priority === "HIGH"){
         priorityButton.style.backgroundColor = "#e06666ff";
         priorityButton.style.color = "white";
+        
     }
 
 
     priorityButton.addEventListener('click', () =>{
-
-        console.log(priorityButton.style.backgroundColor);
-        if (priorityButton.style.backgroundColor === null){
-            console.log("it's null!");
-        }
-
-        console.log(task.priority);
-
         if (task.priority === "LOW"){
             task.priority = "MEDIUM";
-            priorityButton.style.backgroundColor = "#00ab41";
-            priorityButton.style.color="white";
+            priorityButton.style.color="black";
+            priorityButton.style.backgroundColor = "#FDFD96";            
         }
         else if (task.priority === "MEDIUM"){
             task.priority = "HIGH";
-            priorityButton.style.color="black";
-            priorityButton.style.backgroundColor = "#FDFD96";
-
-        }
-        else if (task.priority === "HIGH"){
-            task.priority = "LOW";
             priorityButton.style.backgroundColor = "#e06666ff";
             priorityButton.style.color = "white";
         }
-        
+        else if (task.priority === "HIGH"){
+            task.priority = "LOW";
+            priorityButton.style.backgroundColor = "#00ab41";
+            priorityButton.style.color="white";
+        }
 })
     
     const priorityDate = document.createElement("div");
@@ -281,9 +353,102 @@ export function generateTasks(task){
     
     
     const checkImage = document.createElement("img");
-    checkImage.src = checkPath;
+    if (task.completed === false){
+        checkImage.src = uncheckPath;
+    }
+    else{
+        checkImage.src = checkPath;
+    }
+
+    let completedProject;
+
+        for (let i = 0; i < manager.allProjects.length; i++){
+            if (manager.allProjects[i].name === 'Completed'){
+                completedProject = manager.allProjects[i];
+
+                if (task.completed === true){
+                    if (!completedProject.toDoList.includes(task)){
+                        completedProject.addToDo(task); 
+                    }
+                }
+                else{
+                    completedProject.removeToDo(task);
+                }
+        }
+    }
+    
+
+    
     checkImage.alt = "Icon of checkbox button";
     checkImage.height = 50;
     checkImage.style.width="auto";
     editButton.appendChild(checkImage);
+
+    
+    checkImage.addEventListener('click', () => {
+        if (task.completed === true){
+            task.completed = false;
+            checkImage.src = uncheckPath;
+            
+        }
+        else{
+            task.completed = true;
+            checkImage.src = checkPath;
+        }
+
+        let completedProject;
+
+        for (let i = 0; i < manager.allProjects.length; i++){
+            if (manager.allProjects[i].name === 'Completed'){
+                completedProject = manager.allProjects[i];
+
+                if (task.completed === true){
+                    completedProject.addToDo(task); 
+                }
+                else{
+                    completedProject.removeToDo(task);
+                }
+        }
+
+        
+        // if (task.completed === false){
+        //     task.completed = true;
+        //     checkImage.src = uncheckPath;
+        //     // let completedProject;
+        //     // for (let i = 0; i < manager.allProjects.length; i++){
+        //     //     if (manager.allProjects[i].name === 'Completed'){
+        //     //         completedProject = manager.allProjects[i];
+                    
+        //     //         if (!completedProject.toDoList.includes(task)){
+        //     //             completedProject.addToDo(task);
+        //     //         }
+
+                    
+        //     //         const projectDom = document.querySelector("#projects");
+        //     //         projectDom.innerHTML = "";
+        //     //         generateProjects();
+        //     //     }
+        //     // } 
+        // }
+        // else{
+        //     task.completed = false;
+        //     checkImage.src = checkPath;
+            
+            
+        // }
+
+        // else{
+        //     task.completed = false;
+        //     checkImage.src = checkPath;
+            
+
+            
+        // }
+
+        
+        // if (checkImage.src === checkPath){
+        //     checkImage.src = uncheckPath;
+        // }
+    }
+    })
 }

@@ -12,11 +12,6 @@ const todayProject = project("Today");
 const upcomingProjects = project("Upcoming");
 const completedProjects = project("Completed");
 
-
-const projectList = [];
-
-
-
 //Get today's date
 let currentDate = format(
     new Date(),
@@ -32,9 +27,10 @@ function getDate(month, date, year){
       return result;
 }
 
-const exampleToDoOne = toDo("Read Up to Pg. 56 of Crime & Punishment", "Make sure to highlight", currentDate, "HIGH");
-const exampleToDoTwo = toDo("Read Up to Pg. 107 of Crime & Punishment", "Annotate closely", currentDate, "LOW");
-const exampleToDoThree = toDo("I DON'T BELIEVE IN YOU", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM");
+const exampleToDoOne = toDo("Read Up to Pg. 56 of Crime & Punishment", "Make sure to highlight", currentDate, "HIGH", true);
+const exampleToDoTwo = toDo("Read Up to Pg. 107 of Crime & Punishment", "Annotate closely", currentDate, "LOW", false);
+const exampleToDoThree = toDo("I DON'T BELIEVE IN YOU", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM", false);
+const exampleToDoFour = toDo("Cock", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM", false);
 
 
 const newProject = document.querySelector("#add-project");
@@ -42,30 +38,29 @@ newProject.addEventListener('click', () => {
     console.log('Add New project clicked!');
 })
 
-
-
-
-
 manager.addProject(allTasks);
 manager.addProject(todayProject);
 manager.addProject(upcomingProjects);
 manager.addProject(completedProjects);
 
 console.log("---------Listed Projects-----------");
-manager.listProjects();
-
-
-console.log('----figuring out active project issue--------------');
-// manager.setActiveProject(upcomingProjects);
-manager.getActiveProject();
-manager.setActiveProject(allTasks);
 
 allTasks.addToDo(exampleToDoOne);
 allTasks.addToDo(exampleToDoTwo);
 todayProject.addToDo(exampleToDoThree);
+
+// manager.listProjects();
+
+
+console.log('Here it is normally: ')
+allTasks.printToDoItems();
+
+
+console.log("Now deleting: !!!");
+// allTasks.removeToDo(exampleToDoTwo);
+allTasks.printToDoItems();
 generateProjects();
 
-export { projectList };
 
 
 

@@ -1,4 +1,4 @@
-export function toDo(title, description, dueDate, priority){
+export function toDo(title, description, dueDate, priority, completed){
     let _title = title;
     let _description = description;
     let _dueDate = dueDate;
@@ -7,7 +7,7 @@ export function toDo(title, description, dueDate, priority){
     if (priority === 'LOW' || priority === 'MEDIUM' || priority === 'HIGH'){
         _priority = priority;
     }
-    let _completed = false;
+    let _completed = completed;
 
     return {
         get title(){

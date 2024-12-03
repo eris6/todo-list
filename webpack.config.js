@@ -14,6 +14,10 @@ module.exports = {
       template: "./src/template.html",
     }),
   ],
+  devServer: {
+    port: 666
+  },
+  
   module: {
     rules: [
       {
