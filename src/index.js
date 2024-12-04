@@ -3,7 +3,7 @@ import { toDo } from "./todo.js";
 import { project } from "./project.js";
 import { manager } from "./manager.js";
 import { format } from 'date-fns';
-import { generateProjects, generateTasks } from "./interface.js";
+import { generateProjects, generateTasks, addTaskDialog } from "./interface.js";
 
 
 // Set up default projects
@@ -60,6 +60,7 @@ console.log("Now deleting: !!!");
 // allTasks.removeToDo(exampleToDoTwo);
 allTasks.printToDoItems();
 generateProjects();
+addTaskDialog();
 
 
 

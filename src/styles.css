@@ -39,7 +39,7 @@ body {
   }
 
   .project-head, .header-name, .add-project, .task-item-title, .priority-button, #add-task-button, .delete-project
-  ,.new-project-confirm, .project-input{
+  ,.new-project-confirm, .project-input, .dialog-buttons > button, .dialog-font, textarea, input[type="date"]{
     font-family: "Roboto", sans-serif;
     font-weight: 100;
     color: white;
@@ -104,9 +104,16 @@ body {
     background-color: var(--background-color);
   }
 
-  .header-name{
+  .header-name, .dialog-font{
     font-size: clamp(1rem, 4.5vw, 5rem);
     font-weight: 300;
+    margin-top: 5%;
+  }
+
+  .dialog-date{
+    justify-self: center;
+    margin-top: 1%;
+    margin-bottom: 5%;
   }
 
   .project-head:hover{
@@ -251,6 +258,64 @@ body {
     font-weight: 300;
   }
 
+
+  ::backdrop {
+    background-image: linear-gradient(
+      45deg,
+      magenta,
+      rebeccapurple,
+      dodgerblue,
+      green
+    );
+    opacity: 0.75;
+  }
+
+  dialog{
+    background-color: var(--active-color);
+    border: none;
+    border-radius: 15px;
+    justify-content: center;
+    
+  }
+  .dialog-buttons > button{
+    border: none;
+    font-weight: 300;
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    padding: 2%;
+    
+  }
+
+  .dialog-buttons > button:hover{
+    cursor: pointer;
+  }
+
+
+  .dialog-buttons{
+    display: flex;
+    justify-content: space-around;
+    gap: 5%;
+  }
+
+  .add-dialog, .cancel-dialog{
+    border-radius: 15px;
+  }
+
+  .add-dialog{
+    background-color: var(--green-color);
+  }
+
+  .cancel-dialog{
+    background-color: var(--red-color);
+  }
+
+  input[type=text], textarea, input[type="date"]{
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    font-weight: 300;
+    background-color: pink;
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+  }
 
   @media only screen and (min-width: 1200px) {
     .task-item{

@@ -8,7 +8,29 @@ import editPath from "./icons/edit-tool-pencil-svgrepo-com.svg";
 import uncheckPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
 import checkPath from "./icons/checkbox-check-svgrepo-com.svg"
 
+export function addTaskDialog(){
+    const dialog = document.querySelector("dialog");
+    const showButton = document.querySelector(".add-dialog");
+    const closeButton = document.querySelector(".cancel-dialog");
+
+    // "Show the dialog" button opens the dialog modally
+    // showButton.addEventListener("click", () => {
+    // dialog.showModal();
+    // });
+
+// // "Close" button closes the dialog
+// closeButton.addEventListener("click", () => {
+//   dialog.close();
+// });
+
+    
+}
+
+
+
+
 export function generateProjects(){
+    // return;
     const projectDom = document.querySelector("#projects");
 
     const header = document.createElement('div');
@@ -220,9 +242,76 @@ function generateAddTaskButton(){
     addTask.appendChild(plusButton);
     taskDom.appendChild(addTask);
 
-    addTask.addEventListener('click', () =>{
-        console.log("booba");
+    const dialog = document.createElement("DIALOG");
+    taskDom.appendChild(dialog);
 
+
+    const dialogTitleFont = document.createElement("div");
+    dialogTitleFont.classList.add("dialog-font");
+    dialogTitleFont.textContent = "Title";
+    dialog.appendChild(dialogTitleFont);
+
+    let dialogTitle = document.createElement("textarea");
+    dialogTitle.name = "task-title";
+    dialogTitle.rows = "1";
+    dialogTitle.cols = "40";
+    dialogTitle.placeholder = "Catch the Perseid Meteor Shower"
+    dialog.appendChild(dialogTitle);
+
+    const dialogDescriptionFont = document.createElement("div");
+    dialogDescriptionFont.classList.add("dialog-font");
+    dialogDescriptionFont.textContent = "Description";
+    dialog.appendChild(dialogDescriptionFont);
+
+    let dialogDescription = document.createElement("textarea");
+    dialogDescription.name = "task-description";
+    dialogDescription.rows = "3";
+    dialogDescription.cols = "40";
+    dialogDescription.placeholder = "Grab a blanket, head to a dark spot away from city lights, and watch the Perseid meteor shower peak tonight! Settle in and try to spot as many meteors as you can. Bonus points for capturing a picture of a meteor streaking across the sky. Don’t forget to bring snacks, a warm drink, and maybe a stargazing app to help identify constellations while you wait! 🌠"
+    dialog.appendChild(dialogDescription);
+
+    const dialogDateFont = document.createElement("div");
+    dialogDateFont.classList.add("dialog-font");
+    dialogDateFont.textContent = "Complete by";
+    dialog.appendChild(dialogDateFont);
+
+    const dialogDateStyling = document.createElement("div");
+    dialogDateStyling.classList.add('dialog-date');
+    dialog.appendChild(dialogDateStyling);
+
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.id = "start";
+    dateInput.name = "trip-start";
+    dialogDateStyling.appendChild(dateInput);
+
+    const dialogButtons = document.createElement("div");
+    dialogButtons.classList.add('dialog-buttons');
+    dialog.appendChild(dialogButtons);
+
+    const dialogAddTaskButton = document.createElement("button");
+    dialogAddTaskButton.classList.add('add-dialog');
+    dialogAddTaskButton.textContent = "Add Task";
+    dialogButtons.appendChild(dialogAddTaskButton);
+    dialogAddTaskButton.addEventListener('click', () => {
+        dialog.close();
+    })
+
+
+
+
+
+    const dialogCancelButton = document.createElement("button");
+    dialogCancelButton.classList.add('cancel-dialog');
+    dialogCancelButton.textContent = "Cancel";
+    dialogButtons.appendChild(dialogCancelButton);
+
+    dialogCancelButton.addEventListener('click', () =>{
+        dialog.close();
+    })
+
+    addTask.addEventListener('click', () =>{
+        dialog.showModal();
     })
 }
 
@@ -252,7 +341,6 @@ function genereateDeleteProjectButton(){
 
     taskDom.appendChild(deleteProjectButton);
 }
-
 
 
 export function generateTasks(task){
