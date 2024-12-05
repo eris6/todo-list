@@ -1,5 +1,8 @@
 import { project } from "./project.js";
 import { manager } from "./manager.js";
+import { format, addDays } from 'date-fns';
+import { toDo } from "./todo.js";
+
 
 import plusButtonPath from "./icons/plus-circle-outline.svg";
 import sisyphusPath from "./icons/sisyphus.svg";
@@ -8,23 +11,6 @@ import editPath from "./icons/edit-tool-pencil-svgrepo-com.svg";
 import uncheckPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
 import checkPath from "./icons/checkbox-check-svgrepo-com.svg"
 
-export function addTaskDialog(){
-    const dialog = document.querySelector("dialog");
-    const showButton = document.querySelector(".add-dialog");
-    const closeButton = document.querySelector(".cancel-dialog");
-
-    // "Show the dialog" button opens the dialog modally
-    // showButton.addEventListener("click", () => {
-    // dialog.showModal();
-    // });
-
-// // "Close" button closes the dialog
-// closeButton.addEventListener("click", () => {
-//   dialog.close();
-// });
-
-    
-}
 
 
 
@@ -267,7 +253,7 @@ function generateAddTaskButton(){
     dialogDescription.name = "task-description";
     dialogDescription.rows = "3";
     dialogDescription.cols = "40";
-    dialogDescription.placeholder = "Grab a blanket, head to a dark spot away from city lights, and watch the Perseid meteor shower peak tonight! Settle in and try to spot as many meteors as you can. Bonus points for capturing a picture of a meteor streaking across the sky. Don’t forget to bring snacks, a warm drink, and maybe a stargazing app to help identify constellations while you wait! 🌠"
+    dialogDescription.placeholder = "Grab a blanket, head to a dark spot away from city lights, and watch the Perseid meteor shower peak tonight!Settle in and try to spot as many meteors as you can. Bonus points for capturing a picture of a meteor streaking across the sky. Don’t forget to bring snacks, a warm drink, and maybe a stargazing app to help identify constellations while you wait! 🌠"
     dialog.appendChild(dialogDescription);
 
     const dialogDateFont = document.createElement("div");
@@ -294,8 +280,46 @@ function generateAddTaskButton(){
     dialogAddTaskButton.textContent = "Add Task";
     dialogButtons.appendChild(dialogAddTaskButton);
     dialogAddTaskButton.addEventListener('click', () => {
-        dialog.close();
-    })
+
+    let addedTitle;
+    let addedDescription;
+    let addedDate;
+
+    if (dialogTitle.value){
+        addedTitle = dialogTitle.value;
+    }
+    else{
+        addedTitle = dialogTitle.placeholder;
+    }
+
+    if (dialogDescription.value){
+        addedDescription = dialogDescription.value;
+    }
+    else{
+        addedDescription = dialogDescription.placeholder;
+    }
+
+    if (dateInput.value){
+
+        const add = addDays(new Date(dateInput.value), 1)
+        addedDate = format(add,'EEEE, MMMM dd')
+    }
+    else{
+        addedDate = format(
+            new Date(),
+            'EEEE, MMMM dd'
+          )
+    }
+
+    let currentProject = manager.getActiveProject();
+    let addedTask = toDo(addedTitle, addedDescription, addedDate, "LOW", false);
+    currentProject.addToDo(addedTask);
+    const projectDom = document.querySelector("#projects");
+    dialog.close();
+    projectDom.innerHTML = "";
+    generateProjects();
+
+})
 
 
 
@@ -455,6 +479,16 @@ export function generateTasks(task){
     editImage.height = 50;
     editImage.style.width="auto";
     editButton.appendChild(editImage);
+
+    editButton.addEventListener('click', () => {
+        console.log(task.title);
+        console.log(task.description);
+        console.log(task.dueDate);
+        
+        
+
+        
+    })
     
     
     const checkImage = document.createElement("img");

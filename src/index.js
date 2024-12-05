@@ -5,8 +5,6 @@ import { manager } from "./manager.js";
 import { format } from 'date-fns';
 import { generateProjects, generateTasks, addTaskDialog } from "./interface.js";
 
-
-// Set up default projects
 const allTasks = project("All Tasks");
 const todayProject = project("Today");
 const upcomingProjects = project("Upcoming");
@@ -49,19 +47,13 @@ allTasks.addToDo(exampleToDoOne);
 allTasks.addToDo(exampleToDoTwo);
 todayProject.addToDo(exampleToDoThree);
 
-// manager.listProjects();
-
-
 console.log('Here it is normally: ')
 allTasks.printToDoItems();
 
 
 console.log("Now deleting: !!!");
-// allTasks.removeToDo(exampleToDoTwo);
 allTasks.printToDoItems();
 generateProjects();
-addTaskDialog();
-
 
 
 
