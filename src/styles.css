@@ -271,7 +271,8 @@ body {
   }
 
   dialog{
-    background-color: var(--active-color);
+    background-color: var(--project-background);
+    color: white;
     border: none;
     border-radius: 15px;
     justify-content: center;
@@ -311,7 +312,7 @@ body {
   input[type=text], textarea, input[type="date"]{
     font-size: clamp(1rem, 2.5vw, 2rem);
     font-weight: 300;
-    background-color: #F5A9B8;
+    background-color: var(--active-color);
     width: 100%;
     border: none;
     border-radius: 15px;

@@ -2,7 +2,7 @@ import "./styles.css"
 import { toDo } from "./todo.js";
 import { project } from "./project.js";
 import { manager } from "./manager.js";
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { generateProjects, generateTasks, addTaskDialog } from "./interface.js";
 
 const allTasks = project("All Tasks");
@@ -16,6 +16,12 @@ let currentDate = format(
     'EEEE, MMMM dd'
   )
 
+  function addDate(date, addedDays){
+    const add = addDays(new Date(date), addedDays)
+    let addedDate = format(add,'EEEE, MMMM dd');
+    return format(addedDate,'EEEE, MMMM dd');
+  }
+
 function getDate(month, date, year){
     month -= 1;
     let result = format(
@@ -25,27 +31,21 @@ function getDate(month, date, year){
       return result;
 }
 
-const exampleToDoOne = toDo("Read Up to Pg. 56 of Crime & Punishment", "Make sure to highlight", currentDate, "HIGH", true);
-const exampleToDoTwo = toDo("Read Up to Pg. 107 of Crime & Punishment", "Annotate closely", currentDate, "LOW", false);
-const exampleToDoThree = toDo("I DON'T BELIEVE IN YOU", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM", false);
-const exampleToDoFour = toDo("Cock", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM", false);
-
-
-const newProject = document.querySelector("#add-project");
-
-
 manager.addProject(allTasks);
 manager.addProject(todayProject);
 manager.addProject(upcomingProjects);
 manager.addProject(completedProjects);
 
-allTasks.addToDo(exampleToDoOne);
-allTasks.addToDo(exampleToDoTwo);
-todayProject.addToDo(exampleToDoThree);
+const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addDate(currentDate, 1), "HIGH", false);
+const defaultTaskTwo = toDo("Learn the Phases of the Moon", "Study the different phases of the moon. Track the current phase and update your lunar calendar.", currentDate, "LOW", false);
+const defaultTaskThree = toDo("Spot a Constellation", " Pick a constellation to learn about. Use a stargazing app to help you locate it in the sky tonight.", addDate(currentDate, 2), "MEDIUM", false);
 
-allTasks.printToDoItems();
-allTasks.printToDoItems();
+allTasks.addToDo(defaultTaskOne);
+allTasks.addToDo(defaultTaskTwo);
+allTasks.addToDo(defaultTaskThree);
+
+todayProject.addToDo(defaultTaskTwo);
+upcomingProjects.addToDo(defaultTaskOne);
+upcomingProjects.addToDo(defaultTaskThree);
+
 generateProjects();
-
-
-
