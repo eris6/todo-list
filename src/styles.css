@@ -311,7 +311,7 @@ body {
   input[type=text], textarea, input[type="date"]{
     font-size: clamp(1rem, 2.5vw, 2rem);
     font-weight: 300;
-    background-color: pink;
+    background-color: #F5A9B8;
     width: 100%;
     border: none;
     border-radius: 15px;

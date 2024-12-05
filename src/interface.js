@@ -12,11 +12,7 @@ import uncheckPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
 import checkPath from "./icons/checkbox-check-svgrepo-com.svg"
 
 
-
-
-
 export function generateProjects(){
-    // return;
     const projectDom = document.querySelector("#projects");
 
     const header = document.createElement('div');
@@ -173,7 +169,6 @@ export function generateProjects(){
     })
 
     confirmProject.addEventListener('click', () =>{
-        console.log("Add project clicked!!!");
         projectDom.innerHTML = "";
 
         if (projectInput.value !== ""){
@@ -310,10 +305,46 @@ function generateAddTaskButton(){
             'EEEE, MMMM dd'
           )
     }
+    console.log("AAAAA");
+
+    let allTasks;
+    let today;
+    let upcoming;
+
+    for (let i = 0; i < manager.allProjects.length; i++){
+        if (manager.allProjects[i].name === 'All Tasks'){
+            allTasks = manager.allProjects[i];
+        }
+        if (manager.allProjects[i].name === 'Today'){
+            today = manager.allProjects[i];
+        }
+
+        if (manager.allProjects[i].name === 'Upcoming'){
+            upcoming = manager.allProjects[i];
+        }
+    }
+
+
+
 
     let currentProject = manager.getActiveProject();
     let addedTask = toDo(addedTitle, addedDescription, addedDate, "LOW", false);
     currentProject.addToDo(addedTask);
+
+    if (manager.getActiveProject() !== allTasks && allTasks){
+        allTasks.addToDo(addedTask);
+    }
+
+    if (manager.getActiveProject() !== today && today && addedDate == format(
+        new Date(),
+        'EEEE, MMMM dd'
+      )){
+        today.addToDo(addedTask);
+    }
+    else{
+        upcoming.addToDo(addedTask);
+    }
+
     const projectDom = document.querySelector("#projects");
     dialog.close();
     projectDom.innerHTML = "";
@@ -354,12 +385,10 @@ function genereateDeleteProjectButton(){
 
 
     deleteProjectButton.addEventListener('click', () => {
-        console.log("updated projects");
         manager.listProjects();
         manager.deleteProject(activeProject);
         projectDom.innerHTML = "";
         generateProjects();
-        console.log("updated projects");
         manager.listProjects();
     })
 
@@ -480,15 +509,113 @@ export function generateTasks(task){
     editImage.style.width="auto";
     editButton.appendChild(editImage);
 
-    editButton.addEventListener('click', () => {
-        console.log(task.title);
-        console.log(task.description);
-        console.log(task.dueDate);
-        
-        
+    const dialog = document.createElement("DIALOG");
+    taskDom.appendChild(dialog);
 
-        
+    const dialogTitleFont = document.createElement("div");
+    dialogTitleFont.classList.add("dialog-font");
+    dialogTitleFont.textContent = "Title";
+    dialog.appendChild(dialogTitleFont);
+
+    let dialogTitle = document.createElement("textarea");
+    dialogTitle.name = "task-title";
+    dialogTitle.rows = "1";
+    dialogTitle.cols = "40";
+    dialogTitle.placeholder = task.title;
+    dialog.appendChild(dialogTitle);
+
+    const dialogDescriptionFont = document.createElement("div");
+    dialogDescriptionFont.classList.add("dialog-font");
+    dialogDescriptionFont.textContent = "Description";
+    dialog.appendChild(dialogDescriptionFont);
+
+    let dialogDescription = document.createElement("textarea");
+    dialogDescription.name = "task-description";
+    dialogDescription.rows = "3";
+    dialogDescription.cols = "40";
+    dialogDescription.placeholder = task.description;
+    dialog.appendChild(dialogDescription);
+
+    const dialogDateFont = document.createElement("div");
+    dialogDateFont.classList.add("dialog-font");
+    dialogDateFont.textContent = "Complete by";
+    dialog.appendChild(dialogDateFont);
+
+    const dialogDateStyling = document.createElement("div");
+    dialogDateStyling.classList.add('dialog-date');
+    dialog.appendChild(dialogDateStyling);
+
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.id = "start";
+    dateInput.name = "trip-start";
+    dialogDateStyling.appendChild(dateInput);
+
+    const dialogButtons = document.createElement("div");
+    dialogButtons.classList.add('dialog-buttons');
+    dialog.appendChild(dialogButtons);
+
+    const dialogEditTaskButton = document.createElement("button");
+    dialogEditTaskButton.classList.add('add-dialog');
+    dialogEditTaskButton.textContent = "Add Task";
+    dialogButtons.appendChild(dialogEditTaskButton);
+
+
+    const dialogCancelButton = document.createElement("button");
+    dialogCancelButton.classList.add('cancel-dialog');
+    dialogCancelButton.textContent = "Cancel";
+    dialogButtons.appendChild(dialogCancelButton);
+
+    dialogEditTaskButton.addEventListener('click', () => {
+        let addedTitle;
+    let addedDescription;
+    let addedDate;
+
+    if (dialogTitle.value){
+        addedTitle = dialogTitle.value;
+    }
+    else{
+        addedTitle = dialogTitle.placeholder;
+    }
+
+    if (dialogDescription.value){
+        addedDescription = dialogDescription.value;
+    }
+    else{
+        addedDescription = dialogDescription.placeholder;
+    }
+
+    if (dateInput.value){
+
+        const add = addDays(new Date(dateInput.value), 1)
+        addedDate = format(add,'EEEE, MMMM dd')
+    }
+    else{
+        addedDate = format(
+            new Date(),
+            'EEEE, MMMM dd'
+          )
+    }
+
+    let currentProject = manager.getActiveProject();
+    let addedTask = toDo(addedTitle, addedDescription, addedDate, "LOW", false);
+    currentProject.addToDo(addedTask);
+    currentProject.removeToDo(task);
+    const projectDom = document.querySelector("#projects");
+
+    dialog.close();
+    projectDom.innerHTML = "";
+    generateProjects();
     })
+    
+    dialogCancelButton.addEventListener('click', () =>{
+        dialog.close();
+    })
+
+
+    editImage.addEventListener('click', () => {
+        dialog.showModal();     
+})
     
     
     const checkImage = document.createElement("img");

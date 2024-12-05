@@ -32,26 +32,18 @@ const exampleToDoFour = toDo("Cock", "ANYWAY YOU PLAY IT", currentDate, "MEDIUM"
 
 
 const newProject = document.querySelector("#add-project");
-newProject.addEventListener('click', () => {
-    console.log('Add New project clicked!');
-})
+
 
 manager.addProject(allTasks);
 manager.addProject(todayProject);
 manager.addProject(upcomingProjects);
 manager.addProject(completedProjects);
 
-console.log("---------Listed Projects-----------");
-
 allTasks.addToDo(exampleToDoOne);
 allTasks.addToDo(exampleToDoTwo);
 todayProject.addToDo(exampleToDoThree);
 
-console.log('Here it is normally: ')
 allTasks.printToDoItems();
-
-
-console.log("Now deleting: !!!");
 allTasks.printToDoItems();
 generateProjects();
 
