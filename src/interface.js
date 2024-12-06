@@ -2,6 +2,8 @@ import { project } from "./project.js";
 import { manager } from "./manager.js";
 import { format, addDays } from 'date-fns';
 import { toDo } from "./todo.js";
+import { toDoListLocalStorage, deleteProjectLocalStorage } from "./localstorage.js";
+
 
 
 import plusButtonPath from "./icons/plus-circle-outline.svg";
@@ -67,10 +69,8 @@ export function generateProjects(){
     
             let allTasks = allTasksProject.toDoList;
     
-            if (allTasks.length > 0) {
-                allTasks.forEach((task) => generateTasks(task));
-                generateAddTaskButton();
-            }
+            allTasks.forEach((task) => generateTasks(task));
+            generateAddTaskButton();
         }
         
 
@@ -174,6 +174,8 @@ export function generateProjects(){
         if (projectInput.value !== ""){
             const addedProject = project(projectInput.value);
             manager.addProject(addedProject);
+            localStorage.clear();
+            toDoListLocalStorage();
 
             manager.listProjects();
         }
@@ -305,7 +307,6 @@ function generateAddTaskButton(){
             'EEEE, MMMM dd'
           )
     }
-    console.log("AAAAA");
 
     let allTasks;
     let today;
@@ -348,6 +349,9 @@ function generateAddTaskButton(){
     const projectDom = document.querySelector("#projects");
     dialog.close();
     projectDom.innerHTML = "";
+    localStorage.clear();
+    toDoListLocalStorage();
+
     generateProjects();
 
 })
@@ -388,6 +392,7 @@ function genereateDeleteProjectButton(){
         manager.listProjects();
         manager.deleteProject(activeProject);
         projectDom.innerHTML = "";
+        deleteProjectLocalStorage(activeProject);
         generateProjects();
         manager.listProjects();
     })

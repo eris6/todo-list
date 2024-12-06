@@ -20,6 +20,7 @@ export const manager = function () {
     }
 
     const listProjects = () => {
+        console.log("Listed Projects")
         allProjects.forEach((project) => {
             console.log("------------");
             console.log(project.name);
