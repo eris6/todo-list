@@ -4,7 +4,6 @@ import { project } from "./project.js";
 import { manager } from "./manager.js";
 import { format, addDays } from 'date-fns';
 import { generateProjects, generateTasks, addTaskDialog } from "./interface.js";
-import { getAllLocalStorageItems, toDoListLocalStorage } from "./localstorage.js";
 
 const allTasks = project("All Tasks");
 const todayProject = project("Today");
@@ -63,7 +62,6 @@ function projectLocalStorage(){
 }
 
 
-if (!storageAvailable("localStorage")){
   manager.addProject(allTasks);
   manager.addProject(todayProject);
   manager.addProject(upcomingProjects);
@@ -82,112 +80,3 @@ if (!storageAvailable("localStorage")){
   upcomingProjects.addToDo(defaultTaskThree);
 
   generateProjects();
-}
-
-else{
-
-  if (localStorage.length === 0){
-    manager.addProject(allTasks);
-    manager.addProject(todayProject);
-    manager.addProject(upcomingProjects);
-    manager.addProject(completedProjects);
-  
-    const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addDate(currentDate, 1), "HIGH", false);
-    const defaultTaskTwo = toDo("Learn the Phases of the Moon", "Study the different phases of the moon. Track the current phase and update your lunar calendar.", currentDate, "LOW", false);
-    const defaultTaskThree = toDo("Spot a Constellation", " Pick a constellation to learn about. Use a stargazing app to help you locate it in the sky tonight.", addDate(currentDate, 2), "MEDIUM", false);
-  
-    allTasks.addToDo(defaultTaskOne);
-    allTasks.addToDo(defaultTaskTwo);
-    allTasks.addToDo(defaultTaskThree);
-  
-    todayProject.addToDo(defaultTaskTwo);
-    upcomingProjects.addToDo(defaultTaskOne);
-    upcomingProjects.addToDo(defaultTaskThree);
-  
-    generateProjects(); 
-    toDoListLocalStorage();
-  }
-  else{
-    console.log("isadhfjk;sdajf");
-    manager.listProjects();
-    
-
-    manager.addProject(allTasks);
-    manager.addProject(todayProject);
-    manager.addProject(upcomingProjects);
-    manager.addProject(completedProjects);
-
-    // const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addDate(currentDate, 1), "HIGH", false);
-    // allTasks.addToDo(defaultTaskOne);
-
-    let allLocalItems = getAllLocalStorageItems();
-
-    console.log("listininng");
-    for (const [key, value] of Object.entries(allLocalItems)){
-      let parsedProject = JSON.parse(key);
-      let currProject = project(parsedProject.name);
-      currProject.toDoList = JSON.parse(value);
-
-      if (currProject.name !== 'All Tasks' && currProject.name !== 'Completed'
-        && currProject.name !== 'Today' && currProject.name !== 'Upcoming'){
-        manager.addProject(currProject);
-
-      }
-
-    }
-
-    manager.listProjects();
-    generateProjects();
-
-
-
-    // for (const [key, value] of Object.entries(allLocalItems)) {
-    //   console.log(JSON.parse(key));
-    //   let parsedProject = JSON.parse(key);
-    //   console.log(parsedProject.name);
-
-    //   let currProject = project(parsedProject.name);
-    //   currProject.toDoList = JSON.parse(value);
-
-    //   console.log(currProject);
-    //   console.log(currProject.toDoList);
-
-    //   manager.addProject(currProject);
-
-    //   for (let i = 0; i < currProject.toDoList.length; i++){
-    //     console.log(currProject.toDoList[i]);
-    //     let parsedTask = currProject.toDoList[i];
-
-    //     let currentTask = toDo(parsedTask.title, parsedTask.description, parsedTask.dueDate, parsedTask.priority, parsedTask.completed);
-    //     console.log("booooooba");
-    //     console.log(currentTask);
-        
-
-    //     currProject.addToDo(currentTask);
-    //   }
-
-    //   manager.listProjects();
-
-
-
-
-
-      // let currProjectTasks = JSON.parse(value);
-      // console.log();
-      // console.log();
-      // console.log(JSON.parse(value));
-
-      // console.log(`${key}: ${value}`);
-    }
-    
-
-
-  }
-
-
-
-
-
-
-
-

@@ -2,7 +2,6 @@ import { project } from "./project.js";
 import { manager } from "./manager.js";
 import { format, addDays } from 'date-fns';
 import { toDo } from "./todo.js";
-import { toDoListLocalStorage, deleteProjectLocalStorage } from "./localstorage.js";
 
 
 
@@ -174,9 +173,6 @@ export function generateProjects(){
         if (projectInput.value !== ""){
             const addedProject = project(projectInput.value);
             manager.addProject(addedProject);
-            localStorage.clear();
-            toDoListLocalStorage();
-
             manager.listProjects();
         }
         generateProjects();
@@ -276,6 +272,8 @@ function generateAddTaskButton(){
     dialogAddTaskButton.classList.add('add-dialog');
     dialogAddTaskButton.textContent = "Add Task";
     dialogButtons.appendChild(dialogAddTaskButton);
+
+
     dialogAddTaskButton.addEventListener('click', () => {
 
     let addedTitle;
@@ -349,10 +347,9 @@ function generateAddTaskButton(){
     const projectDom = document.querySelector("#projects");
     dialog.close();
     projectDom.innerHTML = "";
-    localStorage.clear();
-    toDoListLocalStorage();
 
     generateProjects();
+    genereateDeleteProjectButton();
 
 })
 
@@ -392,7 +389,6 @@ function genereateDeleteProjectButton(){
         manager.listProjects();
         manager.deleteProject(activeProject);
         projectDom.innerHTML = "";
-        deleteProjectLocalStorage(activeProject);
         generateProjects();
         manager.listProjects();
     })
