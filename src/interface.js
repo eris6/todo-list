@@ -295,7 +295,6 @@ function generateAddTaskButton(){
     }
 
     if (dateInput.value){
-
         const add = addDays(new Date(dateInput.value), 1)
         addedDate = format(add,'EEEE, MMMM dd')
     }
@@ -349,11 +348,13 @@ function generateAddTaskButton(){
     projectDom.innerHTML = "";
 
     generateProjects();
-    genereateDeleteProjectButton();
+    console.log();
+    if (manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name != 'Today' &&
+    manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'){
+        genereateDeleteProjectButton();
+    }
 
 })
-
-
 
 
 
@@ -522,7 +523,7 @@ export function generateTasks(task){
     dialogTitle.name = "task-title";
     dialogTitle.rows = "1";
     dialogTitle.cols = "40";
-    dialogTitle.placeholder = task.title;
+    dialogTitle.value = task.title;
     dialog.appendChild(dialogTitle);
 
     const dialogDescriptionFont = document.createElement("div");
@@ -534,7 +535,7 @@ export function generateTasks(task){
     dialogDescription.name = "task-description";
     dialogDescription.rows = "3";
     dialogDescription.cols = "40";
-    dialogDescription.placeholder = task.description;
+    dialogDescription.value = task.description;
     dialog.appendChild(dialogDescription);
 
     const dialogDateFont = document.createElement("div");
@@ -556,9 +557,10 @@ export function generateTasks(task){
     dialogButtons.classList.add('dialog-buttons');
     dialog.appendChild(dialogButtons);
 
+
     const dialogEditTaskButton = document.createElement("button");
     dialogEditTaskButton.classList.add('add-dialog');
-    dialogEditTaskButton.textContent = "Add Task";
+    dialogEditTaskButton.textContent = "Edit Task";
     dialogButtons.appendChild(dialogEditTaskButton);
 
 
@@ -567,43 +569,33 @@ export function generateTasks(task){
     dialogCancelButton.textContent = "Cancel";
     dialogButtons.appendChild(dialogCancelButton);
 
+
     dialogEditTaskButton.addEventListener('click', () => {
-        let addedTitle;
-    let addedDescription;
-    let addedDate;
 
-    if (dialogTitle.value){
-        addedTitle = dialogTitle.value;
-    }
-    else{
-        addedTitle = dialogTitle.placeholder;
-    }
-
-    if (dialogDescription.value){
-        addedDescription = dialogDescription.value;
-    }
-    else{
-        addedDescription = dialogDescription.placeholder;
-    }
-
+    console.log(task.title);
+    console.log(task.description);
+    console.log(task.dueDate);
+    console.log('date input');
+    let newDate;
     if (dateInput.value){
-
         const add = addDays(new Date(dateInput.value), 1)
-        addedDate = format(add,'EEEE, MMMM dd')
+        newDate = format(add,'EEEE, MMMM dd')
+        console.log(newDate);
     }
-    else{
-        addedDate = format(
-            new Date(),
-            'EEEE, MMMM dd'
-          )
+    console.log(dateInput.value);
+
+    if (dialogTitle.value !== task.title){
+        task.title = dialogTitle.value;
+    }
+    if (dialogDescription.value !== task.description){
+        task.description = dialogDescription.value;
+    }
+    if (newDate != task.dueDate){
+        task.dueDate = newDate;
     }
 
-    let currentProject = manager.getActiveProject();
-    let addedTask = toDo(addedTitle, addedDescription, addedDate, "LOW", false);
-    currentProject.addToDo(addedTask);
-    currentProject.removeToDo(task);
+
     const projectDom = document.querySelector("#projects");
-
     dialog.close();
     projectDom.innerHTML = "";
     generateProjects();
@@ -641,10 +633,8 @@ export function generateTasks(task){
                 else{
                     completedProject.removeToDo(task);
                 }
-        }
     }
-    
-
+}
     
     checkImage.alt = "Icon of checkbox button";
     checkImage.height = 50;
