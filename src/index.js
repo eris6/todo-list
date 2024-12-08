@@ -101,6 +101,14 @@ if (projectListObj){
       && projectListObj[i].name !== 'Upcoming' && projectListObj[i].name !== 'Completed'){
         const currProject = project(projectListObj[i].name);
         manager.addProject(currProject);
+
+        const currTaskList = projectListObj[i].toDoList;
+        for (let i = 0; i < currTaskList.length; i++){
+          console.log('hiii');
+          console.log(currTaskList[i]);
+          const currTask = toDo(currTaskList[i].title, currTaskList[i].description, currTaskList[i].dueDate, currTaskList[i].priority, currTaskList[i].completed)
+          currProject.addToDo(currTask);
+        }
       }  
    }
 }

@@ -358,7 +358,29 @@ function generateAddTaskButton(){
 
     const projectDom = document.querySelector("#projects");
     dialog.close();
+
+    
+    function saveProjectsToLocal(){
+        let projectArr = [];
+        for (let i = 0; i < manager.allProjects.length; i++){
+          let stringProject = (manager.allProjects[i]);
+          projectArr.push(stringProject);
+          }
+          localStorage.setItem('projects', JSON.stringify(projectArr));
+      }
+      
+      saveProjectsToLocal();
+      console.log('dont let your feet stray');
+      console.log(manager.allProjects);
+      projectDom.innerHTML = '';
+      generateProjects();
+
+
+    
     projectDom.innerHTML = "";
+
+
+    
 
     generateProjects();
     if (manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name != 'Today' &&
