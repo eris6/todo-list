@@ -1,5 +1,6 @@
 export function project(name){
     const toDoList = [];
+    const toDoLocalList = [];
 
     function addToDo(toDoItem){
         toDoList.push(toDoItem);
@@ -17,5 +18,21 @@ export function project(name){
         toDoList.forEach((toDoItem) => toDoItem.printItem());
     }
 
-    return {name, toDoList, addToDo, removeToDo, printToDoItems}
+    function getToDoItems(){
+        let arr = [];
+        toDoList.forEach((toDoItem) => {
+            const toDoObject = {
+                title: toDoItem.title,
+                description: toDoItem.description,
+                priority: toDoItem.priority,
+                dueDate: toDoItem.dueDate,
+                completed: toDoItem.completed
+            };
+            arr.push(toDoObject);
+        })
+        return arr;
+            
+    }
+
+    return {name, toDoList, addToDo, removeToDo, printToDoItems, getToDoItems}
 }

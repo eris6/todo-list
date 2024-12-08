@@ -3,7 +3,6 @@ import { project } from "./project.js";
 export const manager = function () {
     const allProjects = [];
     let activeProject = null;
-
     const addProject = (project) => {
         if (typeof project.addToDo === 'function'){
             allProjects.push(project);
@@ -26,6 +25,7 @@ export const manager = function () {
             console.log(project.name);
             project.printToDoItems();
         })
+
     }
 
     const getActiveProject = () => {

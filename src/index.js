@@ -50,33 +50,65 @@ function storageAvailable(type) {
 }
 
 console.log(localStorage.length);
-// localStorage.clear();
 
 
-function projectLocalStorage(){
-  for (let i = 0; i < manager.allProjects.length; i++){
-    manager.allProjects[i].printToDoItems();
 
+manager.addProject(allTasks);
+manager.addProject(todayProject);
+manager.addProject(upcomingProjects);
+manager.addProject(completedProjects);
+
+const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addDate(currentDate, 1), "HIGH", false);
+const defaultTaskTwo = toDo("Learn the Phases of the Moon", "Study the different phases of the moon. Track the current phase and update your lunar calendar.", currentDate, "LOW", false);
+const defaultTaskThree = toDo("Spot a Constellation", " Pick a constellation to learn about. Use a stargazing app to help you locate it in the sky tonight.", addDate(currentDate, 2), "MEDIUM", false);
+
+allTasks.addToDo(defaultTaskOne);
+allTasks.addToDo(defaultTaskTwo);
+allTasks.addToDo(defaultTaskThree);
+
+todayProject.addToDo(defaultTaskTwo);
+upcomingProjects.addToDo(defaultTaskOne);
+upcomingProjects.addToDo(defaultTaskThree);
+
+if (localStorage.length === 0){
+  generateProjects();
+  localStorage.setItem('placeholder', 1);
+}
+else{  
+  function saveProjectsToLocal(){
+    let projectArr = [];
+    for (let i = 0; i < manager.allProjects.length; i++){
+      let stringProject = (manager.allProjects[i]);
+      projectArr.push(stringProject);
+      }
+      localStorage.setItem('projects', JSON.stringify(projectArr));
   }
-  localStorage.setItem("projects", JSON.stringify(manager.allProjects));
+  
+  function readProjectsFromLocal(){
+    let unParsedProjectList = localStorage.getItem('projects');
+    let projectListObject = JSON.parse(unParsedProjectList);
+    console.log(projectListObject);
+    return projectListObject;
+  }
+
+  readProjectsFromLocal();  
+ let projectListObj = readProjectsFromLocal();
+ 
+if (projectListObj){
+  for (let i = 0; i < projectListObj.length; i++){
+    console.log(projectListObj[i]);
+    if (projectListObj[i].name !== 'All Tasks' && projectListObj[i].name !== 'Today'
+      && projectListObj[i].name !== 'Upcoming' && projectListObj[i].name !== 'Completed'){
+        const currProject = project(projectListObj[i].name);
+        manager.addProject(currProject);
+      }  
+   }
 }
 
-
-  manager.addProject(allTasks);
-  manager.addProject(todayProject);
-  manager.addProject(upcomingProjects);
-  manager.addProject(completedProjects);
-
-  const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addDate(currentDate, 1), "HIGH", false);
-  const defaultTaskTwo = toDo("Learn the Phases of the Moon", "Study the different phases of the moon. Track the current phase and update your lunar calendar.", currentDate, "LOW", false);
-  const defaultTaskThree = toDo("Spot a Constellation", " Pick a constellation to learn about. Use a stargazing app to help you locate it in the sky tonight.", addDate(currentDate, 2), "MEDIUM", false);
-
-  allTasks.addToDo(defaultTaskOne);
-  allTasks.addToDo(defaultTaskTwo);
-  allTasks.addToDo(defaultTaskThree);
-
-  todayProject.addToDo(defaultTaskTwo);
-  upcomingProjects.addToDo(defaultTaskOne);
-  upcomingProjects.addToDo(defaultTaskThree);
-
+ 
   generateProjects();
+
+}
+
+  
+

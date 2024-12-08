@@ -173,9 +173,22 @@ export function generateProjects(){
         if (projectInput.value !== ""){
             const addedProject = project(projectInput.value);
             manager.addProject(addedProject);
-            manager.listProjects();
+
+            function saveProjectsToLocal(){
+                let projectArr = [];
+                for (let i = 0; i < manager.allProjects.length; i++){
+                  let stringProject = (manager.allProjects[i]);
+                  projectArr.push(stringProject);
+                  }
+                  localStorage.setItem('projects', JSON.stringify(projectArr));
+              }
+              
+              saveProjectsToLocal();
+              console.log('dont let your feet stray');
+              console.log(manager.allProjects);
+              projectDom.innerHTML = '';
+              generateProjects();
         }
-        generateProjects();
 
         const recentProject = manager.allProjects[manager.allProjects.length - 1];
 
@@ -348,7 +361,6 @@ function generateAddTaskButton(){
     projectDom.innerHTML = "";
 
     generateProjects();
-    console.log();
     if (manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name != 'Today' &&
     manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'){
         genereateDeleteProjectButton();
@@ -387,11 +399,9 @@ function genereateDeleteProjectButton(){
 
 
     deleteProjectButton.addEventListener('click', () => {
-        manager.listProjects();
         manager.deleteProject(activeProject);
         projectDom.innerHTML = "";
         generateProjects();
-        manager.listProjects();
     })
 
     taskDom.appendChild(deleteProjectButton);
@@ -419,7 +429,6 @@ export function generateTasks(task){
         const projectDom = document.querySelector("#projects");
         let currProject = manager.getActiveProject();
         currProject.removeToDo(task);
-        currProject.printToDoItems();
         projectDom.innerHTML = '';
         generateProjects();
         
@@ -572,17 +581,11 @@ export function generateTasks(task){
 
     dialogEditTaskButton.addEventListener('click', () => {
 
-    console.log(task.title);
-    console.log(task.description);
-    console.log(task.dueDate);
-    console.log('date input');
     let newDate;
     if (dateInput.value){
         const add = addDays(new Date(dateInput.value), 1)
         newDate = format(add,'EEEE, MMMM dd')
-        console.log(newDate);
     }
-    console.log(dateInput.value);
 
     if (dialogTitle.value !== task.title){
         task.title = dialogTitle.value;
