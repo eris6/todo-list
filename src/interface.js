@@ -92,6 +92,10 @@ export function generateProjects(){
         if (clickedProjectTasks.length > 0){
             clickedProjectTasks.forEach((task) => generateTasks(task));
             generateAddTaskButton();
+            if (manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'
+        && manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name !== 'Today'){
+            genereateDeleteProjectButton();
+        }
             
         }
         else{
