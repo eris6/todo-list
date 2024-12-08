@@ -467,8 +467,22 @@ export function generateTasks(task){
         const projectDom = document.querySelector("#projects");
         let currProject = manager.getActiveProject();
         currProject.removeToDo(task);
-        projectDom.innerHTML = '';
-        generateProjects();
+
+
+        function saveProjectsToLocal(){
+            let projectArr = [];
+            for (let i = 0; i < manager.allProjects.length; i++){
+              let stringProject = (manager.allProjects[i]);
+              projectArr.push(stringProject);
+              }
+              localStorage.setItem('projects', JSON.stringify(projectArr));
+          }
+          
+          saveProjectsToLocal();
+          console.log('dont let your feet stray');
+          console.log(manager.allProjects);
+          projectDom.innerHTML = '';
+          generateProjects();
         
 
         if (taskDom.children.length === 0){
@@ -534,6 +548,24 @@ export function generateTasks(task){
             priorityButton.style.backgroundColor = "#00ab41";
             priorityButton.style.color="white";
         }
+
+
+
+        // const projectDom = document.querySelector("#projects");
+        // function saveProjectsToLocal(){
+        //     let projectArr = [];
+        //     for (let i = 0; i < manager.allProjects.length; i++){
+        //       let stringProject = (manager.allProjects[i]);
+        //       projectArr.push(stringProject);
+        //       }
+        //       localStorage.setItem('projects', JSON.stringify(projectArr));
+        //   }
+          
+        //   saveProjectsToLocal();
+        //   console.log('dont let your feet stray');
+        //   console.log(manager.allProjects);
+        //   projectDom.innerHTML = '';
+        //   generateProjects();
 })
     
     const priorityDate = document.createElement("div");
@@ -635,7 +667,6 @@ export function generateTasks(task){
         task.dueDate = newDate;
     }
 
-
     const projectDom = document.querySelector("#projects");
     dialog.close();
     projectDom.innerHTML = "";
@@ -646,10 +677,9 @@ export function generateTasks(task){
         dialog.close();
     })
 
-
     editImage.addEventListener('click', () => {
         dialog.showModal();     
-})
+    })
     
     
     const checkImage = document.createElement("img");
@@ -701,12 +731,41 @@ export function generateTasks(task){
                 completedProject = manager.allProjects[i];
 
                 if (task.completed === true){
-                    completedProject.addToDo(task); 
+                    const projectDom = document.querySelector("#projects");
+                    function saveProjectsToLocal(){
+                        let projectArr = [];
+                        for (let i = 0; i < manager.allProjects.length; i++){
+                          let stringProject = (manager.allProjects[i]);
+                          projectArr.push(stringProject);
+                          }
+                          localStorage.setItem('projects', JSON.stringify(projectArr));
+                      }
+                      
+                      saveProjectsToLocal();
+                      console.log('dont let your feet stray');
+                      console.log(manager.allProjects);
+                      projectDom.innerHTML = '';
+                      generateProjects();
                 }
                 else{
                     completedProject.removeToDo(task);
+                    const projectDom = document.querySelector("#projects");
+                    function saveProjectsToLocal(){
+                        let projectArr = [];
+                        for (let i = 0; i < manager.allProjects.length; i++){
+                          let stringProject = (manager.allProjects[i]);
+                          projectArr.push(stringProject);
+                          }
+                          localStorage.setItem('projects', JSON.stringify(projectArr));
+                      }
+                      
+                      saveProjectsToLocal();
+                      console.log('dont let your feet stray');
+                      console.log(manager.allProjects);
+                      projectDom.innerHTML = '';
+                      generateProjects();
                 }
-        }        
-    }
+            }        
+        }
     })
 }
