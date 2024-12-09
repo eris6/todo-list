@@ -106,8 +106,6 @@ export function generateProjects(){
             genereateDeleteProjectButton();
         }
         }
-
-        
     })
     }
 
@@ -348,7 +346,22 @@ function generateAddTaskButton(){
 
     if (manager.getActiveProject() !== allTasks && allTasks){
         allTasks.addToDo(addedTask);
-    }
+        const projectDom = document.querySelector("#projects");
+        function saveProjectsToLocal(){
+            let projectArr = [];
+            for (let i = 0; i < manager.allProjects.length; i++){
+              let stringProject = (manager.allProjects[i]);
+              projectArr.push(stringProject);
+              }
+              localStorage.setItem('projects', JSON.stringify(projectArr));
+          }
+          
+          saveProjectsToLocal();
+          console.log('dont let your feet stray');
+          console.log(manager.allProjects);
+          projectDom.innerHTML = '';
+          generateProjects();
+        }
 
     if (manager.getActiveProject() !== today && today && addedDate == format(
         new Date(),
@@ -549,6 +562,25 @@ export function generateTasks(task){
             priorityButton.style.color="white";
         }
 
+        const projectDom = document.querySelector("#projects");
+
+        function saveProjectsToLocal(){
+            localStorage.clear();
+            let projectArr = [];
+            for (let i = 0; i < manager.allProjects.length; i++){
+              let stringProject = (manager.allProjects[i]);
+              
+              projectArr.push(stringProject);
+              }
+              localStorage.setItem('projects', JSON.stringify(projectArr));
+          }
+          
+          saveProjectsToLocal();
+          console.log('dont let your feet stray');
+          console.log(manager.allProjects);
+          projectDom.innerHTML = '';
+          generateProjects();
+
 
 
         // const projectDom = document.querySelector("#projects");
@@ -667,10 +699,25 @@ export function generateTasks(task){
         task.dueDate = newDate;
     }
 
-    const projectDom = document.querySelector("#projects");
     dialog.close();
-    projectDom.innerHTML = "";
-    generateProjects();
+    const projectDom = document.querySelector("#projects");
+
+        function saveProjectsToLocal(){
+            localStorage.clear();
+            let projectArr = [];
+            for (let i = 0; i < manager.allProjects.length; i++){
+              let stringProject = (manager.allProjects[i]);
+              
+              projectArr.push(stringProject);
+              }
+              localStorage.setItem('projects', JSON.stringify(projectArr));
+          }
+          
+          saveProjectsToLocal();
+          console.log('dont let your feet stray');
+          console.log(manager.allProjects);
+          projectDom.innerHTML = '';
+          generateProjects();
     })
     
     dialogCancelButton.addEventListener('click', () =>{
@@ -678,7 +725,7 @@ export function generateTasks(task){
     })
 
     editImage.addEventListener('click', () => {
-        dialog.showModal();     
+        dialog.showModal();
     })
     
     

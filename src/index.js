@@ -92,8 +92,8 @@ else{
     return projectListObject;
   }
 
-  readProjectsFromLocal();  
- let projectListObj = readProjectsFromLocal();
+readProjectsFromLocal();  
+let projectListObj = readProjectsFromLocal();
  
 
 if (projectListObj){ 
@@ -121,52 +121,14 @@ if (projectListObj){
       manager.deleteProject(completedProjects);
       manager.addProject(currProject);
     }
-        
 
         const currTaskList = projectListObj[i].toDoList;
         for (let i = 0; i < currTaskList.length; i++){
           const currTask = toDo(currTaskList[i].title, currTaskList[i].description, currTaskList[i].dueDate, currTaskList[i].priority, currTaskList[i].completed)
           currProject.addToDo(currTask);
         }
-      // else{
-      //   console.log("Default projects");
-      //   console.log(projectListObj[i].toDoList);
-
-      //   console.log(manager.allProjects);
-
-        // for (let j = 0; j < manager.allProjects.length; j++){
-        //   if (manager.allProjects[j].name === 'All Tasks' || projectListObj[j].name === 'Today'
-        //     || projectListObj[j].name === 'Upcoming' || projectListObj[i].name === 'Completed'){
-        //     manager.allProjects[j].toDoList = projectListObj[i].toDoList;
-        //   }
-        // }
-
-
-        // const currTaskList = projectListObj[i].toDoList;
-        // for (let i = 0; i < currTaskList.length; i++){
-        //   console.log('hiii');
-        //   console.log(currTaskList[i]);
-        //   const currTask = toDo(currTaskList[i].title, currTaskList[i].description, currTaskList[i].dueDate, currTaskList[i].priority, currTaskList[i].completed)
-        //   currProject.addToDo(currTask);
-        // }
       }
-    // else{
-    //   const currProject = project(projectListObj[i].name);
-    //   console.log('idiot booba');
-    //   console.log(currProject);
-
-    //   const currTaskList = projectListObj[i].toDoList;
-    //     for (let i = 0; i < currTaskList.length; i++){
-    //       console.log('hiii');
-    //       console.log(currTaskList[i]);
-    //       const currTask = toDo(currTaskList[i].title, currTaskList[i].description, currTaskList[i].dueDate, currTaskList[i].priority, currTaskList[i].completed)
-    //       currProject.addToDo(currTask);
-    //     }
-    // }  
-  //  }
 }
-
- 
   generateProjects();
 
 }
