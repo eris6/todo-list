@@ -51,15 +51,6 @@ if (localStorage.length === 0){
 }
 else{  
   
-  function saveProjectsToLocal(){
-    let projectArr = [];
-    for (let i = 0; i < manager.allProjects.length; i++){
-      let stringProject = (manager.allProjects[i]);
-      projectArr.push(stringProject);
-      }
-      localStorage.setItem('projects', JSON.stringify(projectArr));
-  }
-  
   function readProjectsFromLocal(){
     let unParsedProjectList = localStorage.getItem('projects');
     let projectListObject = JSON.parse(unParsedProjectList);
@@ -67,7 +58,6 @@ else{
     return projectListObject;
   }
 
-readProjectsFromLocal();  
 let projectListObj = readProjectsFromLocal();
  
 

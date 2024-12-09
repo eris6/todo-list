@@ -68,8 +68,9 @@ export function generateProjects(){
     
             let allTasks = allTasksProject.toDoList;
     
-            allTasks.forEach((task) => generateTasks(task));
             generateAddTaskButton();
+            allTasks.forEach((task) => generateTasks(task));
+            
         }
         
 
@@ -90,8 +91,9 @@ export function generateProjects(){
         let clickedProjectTasks = manager.allProjects[i].toDoList;
 
         if (clickedProjectTasks.length > 0){
-            clickedProjectTasks.forEach((task) => generateTasks(task));
             generateAddTaskButton();
+            clickedProjectTasks.forEach((task) => generateTasks(task));
+            
             if (manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'
         && manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name !== 'Today'){
             genereateDeleteProjectButton();
@@ -714,8 +716,6 @@ export function generateTasks(task){
           }
           
           saveProjectsToLocal();
-          console.log('dont let your feet stray');
-          console.log(manager.allProjects);
           projectDom.innerHTML = '';
           generateProjects();
     })
