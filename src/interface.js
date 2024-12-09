@@ -391,14 +391,8 @@ function generateAddTaskButton(){
       console.log(manager.allProjects);
       projectDom.innerHTML = '';
       generateProjects();
-
-
     
     projectDom.innerHTML = "";
-
-
-    
-
     generateProjects();
     if (manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name != 'Today' &&
     manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'){
@@ -480,6 +474,27 @@ export function generateTasks(task){
         const projectDom = document.querySelector("#projects");
         let currProject = manager.getActiveProject();
         currProject.removeToDo(task);
+
+        let allTasks;
+    let today;
+    let upcoming;
+
+    for (let i = 0; i < manager.allProjects.length; i++){
+        if (manager.allProjects[i].name === 'All Tasks'){
+            allTasks = manager.allProjects[i];
+        }
+        if (manager.allProjects[i].name === 'Today'){
+            today = manager.allProjects[i];
+        }
+
+        if (manager.allProjects[i].name === 'Upcoming'){
+            upcoming = manager.allProjects[i];
+        }
+    }
+
+
+        today.removeToDo(task);
+        upcoming.removeToDo(task);
 
 
         function saveProjectsToLocal(){
