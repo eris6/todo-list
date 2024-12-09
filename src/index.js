@@ -16,51 +16,26 @@ let currentDate = format(
     'EEEE, MMMM dd'
   )
 
-  function addDate(date, addedDays){
-    const add = addDays(new Date(date), addedDays)
-    let addedDate = format(add,'EEEE, MMMM dd');
-    return format(addedDate,'EEEE, MMMM dd');
-  }
+  const addOneDay = format(
+    addDays(new Date(), 1),
+    'EEEE, MMMM dd'
+  );
 
-function getDate(month, date, year){
-    month -= 1;
-    let result = format(
-        new Date(year, month, date),
-        'EEEE, MMMM dd'
-      )
-      return result;
-}
-
-function storageAvailable(type) {
-  let storage;
-  try {
-    storage = window[type];
-    const x = "__storage_test__";
-    storage.setItem(x, x);
-    storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return (
-      e instanceof DOMException &&
-      e.name === "QuotaExceededError" &&
-      storage &&
-      storage.length !== 0
-    );
-  }
-}
+  const addTwoDays = format(
+    addDays(new Date(), 3),
+    'EEEE, MMMM dd'
+  );
 
 console.log(localStorage.length);
-
-
 
 manager.addProject(allTasks);
 manager.addProject(todayProject);
 manager.addProject(upcomingProjects);
 manager.addProject(completedProjects);
 
-const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addDate(currentDate, 1), "HIGH", false);
+const defaultTaskOne = toDo("Identify the planets", "Research the planets visible tonight and check which ones you can spot with the naked eye. Mark them on a stargazing map.", addOneDay, "HIGH", false);
 const defaultTaskTwo = toDo("Learn the Phases of the Moon", "Study the different phases of the moon. Track the current phase and update your lunar calendar.", currentDate, "LOW", false);
-const defaultTaskThree = toDo("Spot a Constellation", " Pick a constellation to learn about. Use a stargazing app to help you locate it in the sky tonight.", addDate(currentDate, 2), "MEDIUM", false);
+const defaultTaskThree = toDo("Spot a Constellation", " Pick a constellation to learn about. Use a stargazing app to help you locate it in the sky tonight.", addTwoDays, "MEDIUM", false);
 
 allTasks.addToDo(defaultTaskOne);
 allTasks.addToDo(defaultTaskTwo);
@@ -132,6 +107,3 @@ if (projectListObj){
   generateProjects();
 
 }
-
-  
-
