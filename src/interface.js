@@ -682,22 +682,50 @@ export function generateTasks(task){
 
 
     dialogEditTaskButton.addEventListener('click', () => {
+        let currProject = manager.getActiveProject();
+        
 
-    let newDate;
-    if (dateInput.value){
-        const add = addDays(new Date(dateInput.value), 1)
-        newDate = format(add,'EEEE, MMMM dd')
-    }
 
-    if (dialogTitle.value !== task.title){
-        task.title = dialogTitle.value;
-    }
-    if (dialogDescription.value !== task.description){
-        task.description = dialogDescription.value;
-    }
-    if (newDate != task.dueDate){
-        task.dueDate = newDate;
-    }
+        let allTasks;
+        let today;
+        let upcoming;
+
+        for (let i = 0; i < manager.allProjects.length; i++){
+            if (manager.allProjects[i].name === 'All Tasks'){
+                allTasks = manager.allProjects[i];
+            }
+            if (manager.allProjects[i].name === 'Today'){
+                today = manager.allProjects[i];
+            }
+
+            if (manager.allProjects[i].name === 'Upcoming'){
+                upcoming = manager.allProjects[i];
+            }
+        }
+
+        let newDate; 
+        if (dateInput.value){
+            newDate = format(addDays(new Date(dateInput.value), 1), 'EEEE, MMMM dd');
+        }
+        else{
+            newDate = format(new Date(), 'EEEE, MMMM dd');
+        }
+
+
+        const newTask = toDo(dialogTitle.value, dialogDescription.value, newDate, task.priority, task.completed);
+        
+        currProject.removeToDo(task);
+        currProject.addToDo(newTask);
+
+        allTasks.removeToDo(task);
+        allTasks.addToDo(newTask);
+
+        today.removeToDo(task);
+        today.addToDo(newTask);
+
+        upcoming.removeToDo(task);
+        upcoming.addToDo(newTask);
+
 
     dialog.close();
     const projectDom = document.querySelector("#projects");
