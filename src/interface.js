@@ -714,19 +714,29 @@ export function generateTasks(task){
 
         const newTask = toDo(dialogTitle.value, dialogDescription.value, newDate, task.priority, task.completed);
         
-        currProject.removeToDo(task);
-        currProject.addToDo(newTask);
+
+        if (currProject.name !== 'All Tasks' && currProject.name !== 'Today'
+            && currProject.name !== 'Upcoming' && currProject.name !== 'Completed'){
+                currProject.removeToDo(task);
+                currProject.addToDo(newTask);
+            }
+        
 
         allTasks.removeToDo(task);
         allTasks.addToDo(newTask);
 
-        today.removeToDo(task);
-        today.addToDo(newTask);
-
-        upcoming.removeToDo(task);
-        upcoming.addToDo(newTask);
-
-
+        if (manager.getActiveProject() !== today && today && newDate == format(
+            new Date(),
+            'EEEE, MMMM dd'
+          )){
+            today.removeToDo(task);
+            today.addToDo(newTask);
+        }
+        else{
+            upcoming.removeToDo(task);
+            upcoming.addToDo(newTask);
+        }
+        
     dialog.close();
     const projectDom = document.querySelector("#projects");
 
