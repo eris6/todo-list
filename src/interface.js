@@ -1,854 +1,794 @@
 import { project } from "./project.js";
 import { manager } from "./manager.js";
-import { format, addDays } from 'date-fns';
+import { format, addDays } from "date-fns";
 import { toDo } from "./todo.js";
-
-
 
 import plusButtonPath from "./icons/plus-circle-outline.svg";
 import sisyphusPath from "./icons/sisyphus.svg";
 import deletePath from "./icons/delete-1-svgrepo-com.svg";
 import editPath from "./icons/edit-tool-pencil-svgrepo-com.svg";
 import uncheckPath from "./icons/checkbox-unchecked-svgrepo-com.svg";
-import checkPath from "./icons/checkbox-check-svgrepo-com.svg"
+import checkPath from "./icons/checkbox-check-svgrepo-com.svg";
 
+export function generateProjects() {
+  const projectDom = document.querySelector("#projects");
 
-export function generateProjects(){
-    const projectDom = document.querySelector("#projects");
+  const header = document.createElement("div");
+  header.id = "header";
 
-    const header = document.createElement('div');
-    header.id = 'header';
+  const headerName = document.createElement("div");
+  headerName.className = "header-name";
+  headerName.textContent = "Sisyphus";
 
-    const headerName = document.createElement('div');
-    headerName.className = 'header-name';
-    headerName.textContent = 'Sisyphus';
+  const logo = document.createElement("img");
+  logo.src = sisyphusPath;
+  logo.alt =
+    "A stick drawing of Sisyphus rolling up his boulder, always in constant agony as he realizes the futility of living";
+  logo.className = "sisyphus-logo";
 
-    const logo = document.createElement('img');
-    logo.src = sisyphusPath;
-    logo.alt = 'A stick drawing of Sisyphus rolling up his boulder, always in constant agony as he realizes the futility of living';
-    logo.className = 'sisyphus-logo';
+  header.appendChild(headerName);
+  header.appendChild(logo);
 
-    header.appendChild(headerName);
-    header.appendChild(logo);
+  projectDom.appendChild(header);
 
-    projectDom.appendChild(header);
-
-
-    for (let i = 0; i < manager.allProjects.length; i++){
+  for (let i = 0; i < manager.allProjects.length; i++) {
     const projectHeader = document.createElement("div");
     projectHeader.classList.add("project-head");
     projectHeader.textContent = manager.allProjects[i].name;
     projectDom.appendChild(projectHeader);
 
-    if (manager.getActiveProject().name === manager.getActiveProject().name){
-        let projectChildren = projectDom.children;
+    if (manager.getActiveProject().name === manager.getActiveProject().name) {
+      let projectChildren = projectDom.children;
 
-        projectChildren[0].style.backgroundColor="#2E236C"; 
-        
-        const taskDom = document.querySelector("#tasks");
-        taskDom.innerHTML = ''; 
+      projectChildren[0].style.backgroundColor = "#2E236C";
 
+      const taskDom = document.querySelector("#tasks");
+      taskDom.innerHTML = "";
     }
 
-        const allTasksProject = manager.allProjects.find(p => p.name === manager.getActiveProject().name);
-        if (allTasksProject) {
-            manager.setActiveProject(allTasksProject);
-    
-            let projectChildren = projectDom.children;
-            for (let i = 0; i < projectChildren.length - 1; i++) {
-                projectChildren[i].style.backgroundColor = "#2E236C";
-            }
-            const allTasksHeader = Array.from(projectDom.children).find(header => header.textContent === manager.getActiveProject().name);
-            if (allTasksHeader) {
-                allTasksHeader.style.backgroundColor = "#433D8B";
-            }
-    
-            const taskDom = document.querySelector("#tasks");
-            taskDom.innerHTML = ''; 
-    
-            let allTasks = allTasksProject.toDoList;
-    
-            allTasks.forEach((task) => generateTasks(task));
-            generateAddTaskButton();
-        }
-        
+    const allTasksProject = manager.allProjects.find(
+      (p) => p.name === manager.getActiveProject().name,
+    );
+    if (allTasksProject) {
+      manager.setActiveProject(allTasksProject);
 
-    projectHeader.addEventListener('click', (event) =>{
+      let projectChildren = projectDom.children;
+      for (let i = 0; i < projectChildren.length - 1; i++) {
+        projectChildren[i].style.backgroundColor = "#2E236C";
+      }
+      const allTasksHeader = Array.from(projectDom.children).find(
+        (header) => header.textContent === manager.getActiveProject().name,
+      );
+      if (allTasksHeader) {
+        allTasksHeader.style.backgroundColor = "#433D8B";
+      }
 
-        manager.setActiveProject(manager.allProjects[i]);
+      const taskDom = document.querySelector("#tasks");
+      taskDom.innerHTML = "";
 
-        let projectChildren = projectDom.children;
+      let allTasks = allTasksProject.toDoList;
 
-        for (let i = 0; i < projectChildren.length - 1; i++){
-            projectChildren[i].style.backgroundColor="#2E236C"; 
-        }
-        projectHeader.style.backgroundColor="#433D8B";
-        
-        const taskDom = document.querySelector("#tasks");
-        taskDom.innerHTML = ''; 
-
-        let clickedProjectTasks = manager.allProjects[i].toDoList;
-
-        if (clickedProjectTasks.length > 0){
-            clickedProjectTasks.forEach((task) => generateTasks(task));
-            generateAddTaskButton();
-            if (manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'
-        && manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name !== 'Today'){
-            genereateDeleteProjectButton();
-        }
-            
-        }
-        else{
-            generateAddTaskButton();
-
-            if (manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'
-        && manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name !== 'Today'){
-            genereateDeleteProjectButton();
-        }
-        }
-    })
+      allTasks.forEach((task) => generateTasks(task));
+      generateAddTaskButton();
     }
 
-    const addProject = document.createElement("div");
-    addProject.classList.add("add-project");
-    addProject.textContent="New Project";
+    projectHeader.addEventListener("click", (event) => {
+      manager.setActiveProject(manager.allProjects[i]);
 
-    const plusButton = document.createElement("img");
-    plusButton.src = plusButtonPath;
-    plusButton.alt = "icon of a plus button inside a circle";
-    plusButton.height=36;
-    plusButton.style.width="auto"
-    plusButton.classList.add('add-project-button');
-   
-    addProject.appendChild(plusButton);
-    projectDom.appendChild(addProject);
+      let projectChildren = projectDom.children;
 
+      for (let i = 0; i < projectChildren.length - 1; i++) {
+        projectChildren[i].style.backgroundColor = "#2E236C";
+      }
+      projectHeader.style.backgroundColor = "#433D8B";
 
-    const newProjectName = document.createElement("div");
-    newProjectName.classList.add("new-project-name");
-    const projectInput = document.createElement("input");
-    projectInput.classList.add("project-input");
-    projectInput.type="text";
-    projectInput.placeholder="Stargazing";
+      const taskDom = document.querySelector("#tasks");
+      taskDom.innerHTML = "";
 
-    newProjectName.appendChild(projectInput);
+      let clickedProjectTasks = manager.allProjects[i].toDoList;
 
-
-    const newProjecConfirm = document.createElement("div");
-    newProjecConfirm.classList.add("new-project-confirm");
-
-    const confirmProject = document.createElement("div");
-    confirmProject.classList.add("confirm-project");
-    confirmProject.textContent="ADD";
-    
-
-
-    const cancelProject = document.createElement("div");
-    cancelProject.textContent="CANCEL";
-    cancelProject.classList.add("cancel-project");
-
-
-    addProject.addEventListener('click', () =>{
-        projectDom.appendChild(newProjectName);
-        projectDom.appendChild(newProjecConfirm);
-
-        newProjecConfirm.appendChild(confirmProject);
-        newProjecConfirm.appendChild(cancelProject);
-        projectInput.focus();
-    })
-    
-
-
-
-
-    cancelProject.addEventListener('click', () =>{
-        projectDom.removeChild(newProjectName);
-        projectDom.removeChild(newProjecConfirm);
-
-        newProjecConfirm.removeChild(confirmProject);
-        newProjecConfirm.removeChild(cancelProject);
-    })
-
-    confirmProject.addEventListener('click', () =>{
-        projectDom.innerHTML = "";
-
-        if (projectInput.value !== ""){
-            const addedProject = project(projectInput.value);
-            manager.addProject(addedProject);
-
-            function saveProjectsToLocal(){
-                let projectArr = [];
-                for (let i = 0; i < manager.allProjects.length; i++){
-                  let stringProject = (manager.allProjects[i]);
-                  projectArr.push(stringProject);
-                  }
-                  localStorage.setItem('projects', JSON.stringify(projectArr));
-              }
-              
-              saveProjectsToLocal();
-              console.log('dont let your feet stray');
-              console.log(manager.allProjects);
-              projectDom.innerHTML = '';
-              generateProjects();
+      if (clickedProjectTasks.length > 0) {
+        clickedProjectTasks.forEach((task) => generateTasks(task));
+        generateAddTaskButton();
+        if (
+          manager.getActiveProject().name !== "Upcoming" &&
+          manager.getActiveProject().name !== "Completed" &&
+          manager.getActiveProject().name !== "All Tasks" &&
+          manager.getActiveProject().name !== "Today"
+        ) {
+          genereateDeleteProjectButton();
         }
+      } else {
+        generateAddTaskButton();
 
-        const recentProject = manager.allProjects[manager.allProjects.length - 1];
-
-        if (recentProject){
-            manager.setActiveProject(recentProject);
-            let recentChildren = projectDom.children;
-            for (let i = 0; i < recentChildren.length - 1; i++) {
-                recentChildren[i].style.backgroundColor = "#2E236C";
-            }
-
-            const recentProjectHeader = Array.from(projectDom.children).find(header => header.textContent === recentProject.name);
-            if (recentProjectHeader){
-                recentProjectHeader.style.backgroundColor = "#433D8B";
-            }
-
-            const taskDom = document.querySelector("#tasks");
-            taskDom.innerHTML = '';
-            generateAddTaskButton();
-            genereateDeleteProjectButton();
+        if (
+          manager.getActiveProject().name !== "Upcoming" &&
+          manager.getActiveProject().name !== "Completed" &&
+          manager.getActiveProject().name !== "All Tasks" &&
+          manager.getActiveProject().name !== "Today"
+        ) {
+          genereateDeleteProjectButton();
         }
-    })
+      }
+    });
+  }
 
-    
+  const addProject = document.createElement("div");
+  addProject.classList.add("add-project");
+  addProject.textContent = "New Project";
+
+  const plusButton = document.createElement("img");
+  plusButton.src = plusButtonPath;
+  plusButton.alt = "icon of a plus button inside a circle";
+  plusButton.height = 36;
+  plusButton.style.width = "auto";
+  plusButton.classList.add("add-project-button");
+
+  addProject.appendChild(plusButton);
+  projectDom.appendChild(addProject);
+
+  const newProjectName = document.createElement("div");
+  newProjectName.classList.add("new-project-name");
+  const projectInput = document.createElement("input");
+  projectInput.classList.add("project-input");
+  projectInput.type = "text";
+  projectInput.placeholder = "Stargazing";
+
+  newProjectName.appendChild(projectInput);
+
+  const newProjecConfirm = document.createElement("div");
+  newProjecConfirm.classList.add("new-project-confirm");
+
+  const confirmProject = document.createElement("div");
+  confirmProject.classList.add("confirm-project");
+  confirmProject.textContent = "ADD";
+
+  const cancelProject = document.createElement("div");
+  cancelProject.textContent = "CANCEL";
+  cancelProject.classList.add("cancel-project");
+
+  addProject.addEventListener("click", () => {
+    projectDom.appendChild(newProjectName);
+    projectDom.appendChild(newProjecConfirm);
+
+    newProjecConfirm.appendChild(confirmProject);
+    newProjecConfirm.appendChild(cancelProject);
+    projectInput.focus();
+  });
+
+  cancelProject.addEventListener("click", () => {
+    projectDom.removeChild(newProjectName);
+    projectDom.removeChild(newProjecConfirm);
+
+    newProjecConfirm.removeChild(confirmProject);
+    newProjecConfirm.removeChild(cancelProject);
+  });
+
+  confirmProject.addEventListener("click", () => {
+    projectDom.innerHTML = "";
+
+    if (projectInput.value !== "") {
+      const addedProject = project(projectInput.value);
+      manager.addProject(addedProject);
+
+      function saveProjectsToLocal() {
+        let projectArr = [];
+        for (let i = 0; i < manager.allProjects.length; i++) {
+          let stringProject = manager.allProjects[i];
+          projectArr.push(stringProject);
+        }
+        localStorage.setItem("projects", JSON.stringify(projectArr));
+      }
+
+      saveProjectsToLocal();
+      projectDom.innerHTML = "";
+      generateProjects();
+    }
+
+    const recentProject = manager.allProjects[manager.allProjects.length - 1];
+
+    if (recentProject) {
+      manager.setActiveProject(recentProject);
+      let recentChildren = projectDom.children;
+      for (let i = 0; i < recentChildren.length - 1; i++) {
+        recentChildren[i].style.backgroundColor = "#2E236C";
+      }
+
+      const recentProjectHeader = Array.from(projectDom.children).find(
+        (header) => header.textContent === recentProject.name,
+      );
+      if (recentProjectHeader) {
+        recentProjectHeader.style.backgroundColor = "#433D8B";
+      }
+
+      const taskDom = document.querySelector("#tasks");
+      taskDom.innerHTML = "";
+      generateAddTaskButton();
+      genereateDeleteProjectButton();
+    }
+  });
 }
 
-function generateAddTaskButton(){
-    const taskDom = document.querySelector("#tasks");
-    const addTask = document.createElement("div");
-    addTask.classList.add("add-task");
+function generateAddTaskButton() {
+  const taskDom = document.querySelector("#tasks");
+  const addTask = document.createElement("div");
+  addTask.classList.add("add-task");
 
-    const addTaskButton = document.createElement("div");
-    addTaskButton.id = 'add-task-button';
-    addTaskButton.textContent = "New Task";
+  const addTaskButton = document.createElement("div");
+  addTaskButton.id = "add-task-button";
+  addTaskButton.textContent = "New Task";
 
-    addTask.appendChild(addTaskButton);
+  addTask.appendChild(addTaskButton);
 
-    const plusButton = document.createElement("img");
-    plusButton.src = plusButtonPath;
-    plusButton.alt = "icon of a plus button inside a circle";
-    plusButton.height=50;
-    plusButton.style.width="auto"
+  const plusButton = document.createElement("img");
+  plusButton.src = plusButtonPath;
+  plusButton.alt = "icon of a plus button inside a circle";
+  plusButton.height = 50;
+  plusButton.style.width = "auto";
 
-    addTask.appendChild(plusButton);
-    taskDom.appendChild(addTask);
+  addTask.appendChild(plusButton);
+  taskDom.appendChild(addTask);
 
-    const dialog = document.createElement("DIALOG");
-    taskDom.appendChild(dialog);
+  const dialog = document.createElement("DIALOG");
+  taskDom.appendChild(dialog);
 
+  const dialogTitleFont = document.createElement("div");
+  dialogTitleFont.classList.add("dialog-font");
+  dialogTitleFont.textContent = "Title";
+  dialog.appendChild(dialogTitleFont);
 
-    const dialogTitleFont = document.createElement("div");
-    dialogTitleFont.classList.add("dialog-font");
-    dialogTitleFont.textContent = "Title";
-    dialog.appendChild(dialogTitleFont);
+  let dialogTitle = document.createElement("textarea");
+  dialogTitle.name = "task-title";
+  dialogTitle.rows = "1";
+  dialogTitle.cols = "40";
+  dialogTitle.placeholder = "Catch the Perseid Meteor Shower";
+  dialog.appendChild(dialogTitle);
 
-    let dialogTitle = document.createElement("textarea");
-    dialogTitle.name = "task-title";
-    dialogTitle.rows = "1";
-    dialogTitle.cols = "40";
-    dialogTitle.placeholder = "Catch the Perseid Meteor Shower"
-    dialog.appendChild(dialogTitle);
+  const dialogDescriptionFont = document.createElement("div");
+  dialogDescriptionFont.classList.add("dialog-font");
+  dialogDescriptionFont.textContent = "Description";
+  dialog.appendChild(dialogDescriptionFont);
 
-    const dialogDescriptionFont = document.createElement("div");
-    dialogDescriptionFont.classList.add("dialog-font");
-    dialogDescriptionFont.textContent = "Description";
-    dialog.appendChild(dialogDescriptionFont);
+  let dialogDescription = document.createElement("textarea");
+  dialogDescription.name = "task-description";
+  dialogDescription.rows = "3";
+  dialogDescription.cols = "40";
+  dialogDescription.placeholder =
+    "Grab a blanket, head to a dark spot away from city lights, and watch the Perseid meteor shower peak tonight!Settle in and try to spot as many meteors as you can. Bonus points for capturing a picture of a meteor streaking across the sky. Don’t forget to bring snacks, a warm drink, and maybe a stargazing app to help identify constellations while you wait! 🌠";
+  dialog.appendChild(dialogDescription);
 
-    let dialogDescription = document.createElement("textarea");
-    dialogDescription.name = "task-description";
-    dialogDescription.rows = "3";
-    dialogDescription.cols = "40";
-    dialogDescription.placeholder = "Grab a blanket, head to a dark spot away from city lights, and watch the Perseid meteor shower peak tonight!Settle in and try to spot as many meteors as you can. Bonus points for capturing a picture of a meteor streaking across the sky. Don’t forget to bring snacks, a warm drink, and maybe a stargazing app to help identify constellations while you wait! 🌠"
-    dialog.appendChild(dialogDescription);
+  const dialogDateFont = document.createElement("div");
+  dialogDateFont.classList.add("dialog-font");
+  dialogDateFont.textContent = "Complete by";
+  dialog.appendChild(dialogDateFont);
 
-    const dialogDateFont = document.createElement("div");
-    dialogDateFont.classList.add("dialog-font");
-    dialogDateFont.textContent = "Complete by";
-    dialog.appendChild(dialogDateFont);
+  const dialogDateStyling = document.createElement("div");
+  dialogDateStyling.classList.add("dialog-date");
+  dialog.appendChild(dialogDateStyling);
 
-    const dialogDateStyling = document.createElement("div");
-    dialogDateStyling.classList.add('dialog-date');
-    dialog.appendChild(dialogDateStyling);
+  const dateInput = document.createElement("input");
+  dateInput.type = "date";
+  dateInput.id = "start";
+  dateInput.name = "trip-start";
+  dialogDateStyling.appendChild(dateInput);
 
-    const dateInput = document.createElement("input");
-    dateInput.type = "date";
-    dateInput.id = "start";
-    dateInput.name = "trip-start";
-    dialogDateStyling.appendChild(dateInput);
+  const dialogButtons = document.createElement("div");
+  dialogButtons.classList.add("dialog-buttons");
+  dialog.appendChild(dialogButtons);
 
-    const dialogButtons = document.createElement("div");
-    dialogButtons.classList.add('dialog-buttons');
-    dialog.appendChild(dialogButtons);
+  const dialogAddTaskButton = document.createElement("button");
+  dialogAddTaskButton.classList.add("add-dialog");
+  dialogAddTaskButton.textContent = "Add Task";
+  dialogButtons.appendChild(dialogAddTaskButton);
 
-    const dialogAddTaskButton = document.createElement("button");
-    dialogAddTaskButton.classList.add('add-dialog');
-    dialogAddTaskButton.textContent = "Add Task";
-    dialogButtons.appendChild(dialogAddTaskButton);
-
-
-    dialogAddTaskButton.addEventListener('click', () => {
-
+  dialogAddTaskButton.addEventListener("click", () => {
     let addedTitle;
     let addedDescription;
     let addedDate;
 
-    if (dialogTitle.value){
-        addedTitle = dialogTitle.value;
-    }
-    else{
-        addedTitle = dialogTitle.placeholder;
-    }
-
-    if (dialogDescription.value){
-        addedDescription = dialogDescription.value;
-    }
-    else{
-        addedDescription = dialogDescription.placeholder;
+    if (dialogTitle.value) {
+      addedTitle = dialogTitle.value;
+    } else {
+      addedTitle = dialogTitle.placeholder;
     }
 
-    if (dateInput.value){
-        const add = addDays(new Date(dateInput.value), 1)
-        addedDate = format(add,'EEEE, MMMM dd')
+    if (dialogDescription.value) {
+      addedDescription = dialogDescription.value;
+    } else {
+      addedDescription = dialogDescription.placeholder;
     }
-    else{
-        addedDate = format(
-            new Date(),
-            'EEEE, MMMM dd'
-          )
+
+    if (dateInput.value) {
+      const add = addDays(new Date(dateInput.value), 1);
+      addedDate = format(add, "EEEE, MMMM dd");
+    } else {
+      addedDate = format(new Date(), "EEEE, MMMM dd");
     }
 
     let allTasks;
     let today;
     let upcoming;
 
-    for (let i = 0; i < manager.allProjects.length; i++){
-        if (manager.allProjects[i].name === 'All Tasks'){
-            allTasks = manager.allProjects[i];
-        }
-        if (manager.allProjects[i].name === 'Today'){
-            today = manager.allProjects[i];
-        }
+    for (let i = 0; i < manager.allProjects.length; i++) {
+      if (manager.allProjects[i].name === "All Tasks") {
+        allTasks = manager.allProjects[i];
+      }
+      if (manager.allProjects[i].name === "Today") {
+        today = manager.allProjects[i];
+      }
 
-        if (manager.allProjects[i].name === 'Upcoming'){
-            upcoming = manager.allProjects[i];
-        }
+      if (manager.allProjects[i].name === "Upcoming") {
+        upcoming = manager.allProjects[i];
+      }
     }
-
-
-
 
     let currentProject = manager.getActiveProject();
     let addedTask = toDo(addedTitle, addedDescription, addedDate, "LOW", false);
     currentProject.addToDo(addedTask);
 
-    if (manager.getActiveProject() !== allTasks && allTasks){
-        allTasks.addToDo(addedTask);
-        const projectDom = document.querySelector("#projects");
-        function saveProjectsToLocal(){
-            let projectArr = [];
-            for (let i = 0; i < manager.allProjects.length; i++){
-              let stringProject = (manager.allProjects[i]);
-              projectArr.push(stringProject);
-              }
-              localStorage.setItem('projects', JSON.stringify(projectArr));
-          }
-          
-          saveProjectsToLocal();
-          console.log('dont let your feet stray');
-          console.log(manager.allProjects);
-          projectDom.innerHTML = '';
-          generateProjects();
+    if (manager.getActiveProject() !== allTasks && allTasks) {
+      allTasks.addToDo(addedTask);
+      const projectDom = document.querySelector("#projects");
+      function saveProjectsToLocal() {
+        let projectArr = [];
+        for (let i = 0; i < manager.allProjects.length; i++) {
+          let stringProject = manager.allProjects[i];
+          projectArr.push(stringProject);
         }
+        localStorage.setItem("projects", JSON.stringify(projectArr));
+      }
 
-    if (manager.getActiveProject() !== today && today && addedDate == format(
-        new Date(),
-        'EEEE, MMMM dd'
-      )){
-        today.addToDo(addedTask);
+      saveProjectsToLocal();
+      projectDom.innerHTML = "";
+      generateProjects();
     }
-    else{
-        upcoming.addToDo(addedTask);
+
+    if (
+      manager.getActiveProject() !== today &&
+      today &&
+      addedDate == format(new Date(), "EEEE, MMMM dd")
+    ) {
+      today.addToDo(addedTask);
+    } else {
+      upcoming.addToDo(addedTask);
     }
 
     const projectDom = document.querySelector("#projects");
     dialog.close();
 
-    
-    function saveProjectsToLocal(){
-        let projectArr = [];
-        for (let i = 0; i < manager.allProjects.length; i++){
-          let stringProject = (manager.allProjects[i]);
-          projectArr.push(stringProject);
-          }
-          localStorage.setItem('projects', JSON.stringify(projectArr));
+    function saveProjectsToLocal() {
+      let projectArr = [];
+      for (let i = 0; i < manager.allProjects.length; i++) {
+        let stringProject = manager.allProjects[i];
+        projectArr.push(stringProject);
       }
-      
-      saveProjectsToLocal();
-      console.log('dont let your feet stray');
-      console.log(manager.allProjects);
-      projectDom.innerHTML = '';
-      generateProjects();
-    
-    projectDom.innerHTML = "";
-    generateProjects();
-    if (manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name != 'Today' &&
-    manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'){
-        genereateDeleteProjectButton();
+      localStorage.setItem("projects", JSON.stringify(projectArr));
     }
 
-})
+    saveProjectsToLocal();
+    projectDom.innerHTML = "";
+    generateProjects();
 
+    projectDom.innerHTML = "";
+    generateProjects();
+    if (
+      manager.getActiveProject().name !== "All Tasks" &&
+      manager.getActiveProject().name != "Today" &&
+      manager.getActiveProject().name !== "Upcoming" &&
+      manager.getActiveProject().name !== "Completed"
+    ) {
+      genereateDeleteProjectButton();
+    }
+  });
 
+  const dialogCancelButton = document.createElement("button");
+  dialogCancelButton.classList.add("cancel-dialog");
+  dialogCancelButton.textContent = "Cancel";
+  dialogButtons.appendChild(dialogCancelButton);
 
-    const dialogCancelButton = document.createElement("button");
-    dialogCancelButton.classList.add('cancel-dialog');
-    dialogCancelButton.textContent = "Cancel";
-    dialogButtons.appendChild(dialogCancelButton);
+  dialogCancelButton.addEventListener("click", () => {
+    dialog.close();
+  });
 
-    dialogCancelButton.addEventListener('click', () =>{
-        dialog.close();
-    })
-
-    addTask.addEventListener('click', () =>{
-        dialog.showModal();
-    })
+  addTask.addEventListener("click", () => {
+    dialog.showModal();
+  });
 }
 
-function genereateDeleteProjectButton(){
-    const activeProject = manager.getActiveProject();
-    const taskDom = document.querySelector("#tasks");
+function genereateDeleteProjectButton() {
+  const activeProject = manager.getActiveProject();
+  const taskDom = document.querySelector("#tasks");
+  const projectDom = document.querySelector("#projects");
+
+  const deleteProjectButton = document.createElement("div");
+  deleteProjectButton.classList.add("delete-project");
+
+  const deleteProjectText = document.createElement("div");
+  deleteProjectText.classList.add("delete-project-text");
+  deleteProjectText.textContent = "Delete Project";
+  deleteProjectButton.appendChild(deleteProjectText);
+
+  deleteProjectButton.addEventListener("click", () => {
+    manager.deleteProject(activeProject);
+    function saveProjectsToLocal() {
+      let projectArr = [];
+      for (let i = 0; i < manager.allProjects.length; i++) {
+        let stringProject = manager.allProjects[i];
+        projectArr.push(stringProject);
+      }
+      localStorage.setItem("projects", JSON.stringify(projectArr));
+    }
+
+    saveProjectsToLocal();
+    projectDom.innerHTML = "";
+    generateProjects();
+  });
+
+  taskDom.appendChild(deleteProjectButton);
+}
+
+export function generateTasks(task) {
+  const taskDom = document.querySelector("#tasks");
+  const taskItem = document.createElement("div");
+  taskItem.classList.add("task-item");
+
+  taskDom.appendChild(taskItem);
+
+  const itemCloser = document.createElement("div");
+  itemCloser.classList.add("item-closer");
+  taskItem.appendChild(itemCloser);
+
+  const deleteButton = document.createElement("img");
+  deleteButton.src = deletePath;
+  deleteButton.alt = "icon for the minimize button";
+  deleteButton.height = 36;
+  deleteButton.style.width = "auto";
+
+  deleteButton.addEventListener("click", () => {
     const projectDom = document.querySelector("#projects");
-
-    const deleteProjectButton = document.createElement("div");
-    deleteProjectButton.classList.add("delete-project");
-
-    const deleteProjectText = document.createElement("div");
-    deleteProjectText.classList.add("delete-project-text");
-    deleteProjectText.textContent = "Delete Project"
-    deleteProjectButton.appendChild(deleteProjectText);
-
-
-    deleteProjectButton.addEventListener('click', () => {
-        manager.deleteProject(activeProject);
-        function saveProjectsToLocal(){
-        let projectArr = [];
-        for (let i = 0; i < manager.allProjects.length; i++){
-            let stringProject = (manager.allProjects[i]);
-            projectArr.push(stringProject);
-            }
-            localStorage.setItem('projects', JSON.stringify(projectArr));
-        }
-        
-        saveProjectsToLocal();
-        console.log('dont let your feet stray');
-        console.log(manager.allProjects);
-        projectDom.innerHTML = "";
-        generateProjects();
-    })
-
-    taskDom.appendChild(deleteProjectButton);
-}
-
-
-export function generateTasks(task){
-    const taskDom = document.querySelector("#tasks");
-    const taskItem = document.createElement("div");
-    taskItem.classList.add("task-item");
-    
-    taskDom.appendChild(taskItem);
-    
-    const itemCloser = document.createElement("div");
-    itemCloser.classList.add("item-closer");
-    taskItem.appendChild(itemCloser);
-    
-    const deleteButton = document.createElement("img");
-    deleteButton.src = deletePath;
-    deleteButton.alt = "icon for the minimize button";
-    deleteButton.height=36;
-    deleteButton.style.width="auto";
-
-    deleteButton.addEventListener('click', () =>{
-        const projectDom = document.querySelector("#projects");
-        let currProject = manager.getActiveProject();
-        currProject.removeToDo(task);
+    let currProject = manager.getActiveProject();
+    currProject.removeToDo(task);
 
     let allTasks;
     let today;
     let upcoming;
 
-    for (let i = 0; i < manager.allProjects.length; i++){
-        if (manager.allProjects[i].name === 'All Tasks'){
-            allTasks = manager.allProjects[i];
-        }
-        if (manager.allProjects[i].name === 'Today'){
-            today = manager.allProjects[i];
-        }
+    for (let i = 0; i < manager.allProjects.length; i++) {
+      if (manager.allProjects[i].name === "All Tasks") {
+        allTasks = manager.allProjects[i];
+      }
+      if (manager.allProjects[i].name === "Today") {
+        today = manager.allProjects[i];
+      }
 
-        if (manager.allProjects[i].name === 'Upcoming'){
-            upcoming = manager.allProjects[i];
-        }
-    }
-    
-
-        allTasks.removeToDo(task);
-        today.removeToDo(task);
-        upcoming.removeToDo(task);
-
-
-
-
-        function saveProjectsToLocal(){
-            let projectArr = [];
-            for (let i = 0; i < manager.allProjects.length; i++){
-              let stringProject = (manager.allProjects[i]);
-              projectArr.push(stringProject);
-              }
-              localStorage.setItem('projects', JSON.stringify(projectArr));
-          }
-          
-          saveProjectsToLocal();
-          console.log('dont let your feet stray');
-          console.log(manager.allProjects);
-          projectDom.innerHTML = '';
-          generateProjects();
-        
-
-        if (taskDom.children.length === 0){
-            generateAddTaskButton();
-        }
-        
-
-    })
-
-    itemCloser.appendChild(deleteButton);
-    
-    
-    const itemTitle = document.createElement("div");
-    itemTitle.classList.add("task-item-title");
-    itemTitle.textContent = task.title;
-    taskItem.appendChild(itemTitle);
-    
-    const itemDescription = document.createElement("div");
-    itemDescription.classList.add("task-item-description");
-    itemDescription.textContent = task.description;
-    taskItem.appendChild(itemDescription);
-    
-    
-    const bottomRow = document.createElement("div");
-    bottomRow.classList.add("task-item-bottom-row");
-    taskItem.appendChild(bottomRow);
-    
-    const priorityButton = document.createElement("div");
-    priorityButton.classList.add("priority-button");
-    bottomRow.appendChild(priorityButton);
-
-
-    if (task.priority === "LOW"){
-        priorityButton.style.backgroundColor = "#00ab41";
-        priorityButton.style.color="white";
-        
-    }
-    else if (task.priority === "MEDIUM"){
-        priorityButton.style.color="black";
-        priorityButton.style.backgroundColor = "#FDFD96";
-
-    }
-    else if (task.priority === "HIGH"){
-        priorityButton.style.backgroundColor = "#e06666ff";
-        priorityButton.style.color = "white";
-        
+      if (manager.allProjects[i].name === "Upcoming") {
+        upcoming = manager.allProjects[i];
+      }
     }
 
+    allTasks.removeToDo(task);
+    today.removeToDo(task);
+    upcoming.removeToDo(task);
 
-    priorityButton.addEventListener('click', () =>{
-        if (task.priority === "LOW"){
-            task.priority = "MEDIUM";
-            priorityButton.style.color="black";
-            priorityButton.style.backgroundColor = "#FDFD96";            
-        }
-        else if (task.priority === "MEDIUM"){
-            task.priority = "HIGH";
-            priorityButton.style.backgroundColor = "#e06666ff";
-            priorityButton.style.color = "white";
-        }
-        else if (task.priority === "HIGH"){
-            task.priority = "LOW";
-            priorityButton.style.backgroundColor = "#00ab41";
-            priorityButton.style.color="white";
-        }
+    function saveProjectsToLocal() {
+      let projectArr = [];
+      for (let i = 0; i < manager.allProjects.length; i++) {
+        let stringProject = manager.allProjects[i];
+        projectArr.push(stringProject);
+      }
+      localStorage.setItem("projects", JSON.stringify(projectArr));
+    }
 
-        const projectDom = document.querySelector("#projects");
+    saveProjectsToLocal();
+    projectDom.innerHTML = "";
+    generateProjects();
 
-        function saveProjectsToLocal(){
-            localStorage.clear();
-            let projectArr = [];
-            for (let i = 0; i < manager.allProjects.length; i++){
-              let stringProject = (manager.allProjects[i]);
-              
-              projectArr.push(stringProject);
-              }
-              localStorage.setItem('projects', JSON.stringify(projectArr));
-          }
-          
-          saveProjectsToLocal();
-          console.log('dont let your feet stray');
-          console.log(manager.allProjects);
-          projectDom.innerHTML = '';
-          generateProjects();
-})
-    
-    const priorityDate = document.createElement("div");
-    priorityDate.classList.add("complete-by-text");
-    priorityButton.appendChild(priorityDate);
-    priorityDate.textContent=task.dueDate;
-    
-    
-    const editCheckButtons = document.createElement("div");
-    editCheckButtons.classList.add("edit-check-buttons");
-    bottomRow.appendChild(editCheckButtons);
-    
-    
-    const editButton = document.createElement("div");
-    editButton.classList.add("edit-button");
-    editCheckButtons.appendChild(editButton);
-    
-    const editImage = document.createElement("img");
-    editImage.src = editPath;
-    editImage.alt = "Icon of edit button";
-    editImage.height = 50;
-    editImage.style.width="auto";
-    editButton.appendChild(editImage);
+    if (taskDom.children.length === 0) {
+      generateAddTaskButton();
+    }
+  });
 
-    const dialog = document.createElement("DIALOG");
-    taskDom.appendChild(dialog);
+  itemCloser.appendChild(deleteButton);
 
-    const dialogTitleFont = document.createElement("div");
-    dialogTitleFont.classList.add("dialog-font");
-    dialogTitleFont.textContent = "Title";
-    dialog.appendChild(dialogTitleFont);
+  const itemTitle = document.createElement("div");
+  itemTitle.classList.add("task-item-title");
+  itemTitle.textContent = task.title;
+  taskItem.appendChild(itemTitle);
 
-    let dialogTitle = document.createElement("textarea");
-    dialogTitle.name = "task-title";
-    dialogTitle.rows = "1";
-    dialogTitle.cols = "40";
-    dialogTitle.value = task.title;
-    dialog.appendChild(dialogTitle);
+  const itemDescription = document.createElement("div");
+  itemDescription.classList.add("task-item-description");
+  itemDescription.textContent = task.description;
+  taskItem.appendChild(itemDescription);
 
-    const dialogDescriptionFont = document.createElement("div");
-    dialogDescriptionFont.classList.add("dialog-font");
-    dialogDescriptionFont.textContent = "Description";
-    dialog.appendChild(dialogDescriptionFont);
+  const bottomRow = document.createElement("div");
+  bottomRow.classList.add("task-item-bottom-row");
+  taskItem.appendChild(bottomRow);
 
-    let dialogDescription = document.createElement("textarea");
-    dialogDescription.name = "task-description";
-    dialogDescription.rows = "3";
-    dialogDescription.cols = "40";
-    dialogDescription.value = task.description;
-    dialog.appendChild(dialogDescription);
+  const priorityButton = document.createElement("div");
+  priorityButton.classList.add("priority-button");
+  bottomRow.appendChild(priorityButton);
 
-    const dialogDateFont = document.createElement("div");
-    dialogDateFont.classList.add("dialog-font");
-    dialogDateFont.textContent = "Complete by";
-    dialog.appendChild(dialogDateFont);
+  if (task.priority === "LOW") {
+    priorityButton.style.backgroundColor = "#00ab41";
+    priorityButton.style.color = "white";
+  } else if (task.priority === "MEDIUM") {
+    priorityButton.style.color = "black";
+    priorityButton.style.backgroundColor = "#FDFD96";
+  } else if (task.priority === "HIGH") {
+    priorityButton.style.backgroundColor = "#e06666ff";
+    priorityButton.style.color = "white";
+  }
 
-    const dialogDateStyling = document.createElement("div");
-    dialogDateStyling.classList.add('dialog-date');
-    dialog.appendChild(dialogDateStyling);
+  priorityButton.addEventListener("click", () => {
+    if (task.priority === "LOW") {
+      task.priority = "MEDIUM";
+      priorityButton.style.color = "black";
+      priorityButton.style.backgroundColor = "#FDFD96";
+    } else if (task.priority === "MEDIUM") {
+      task.priority = "HIGH";
+      priorityButton.style.backgroundColor = "#e06666ff";
+      priorityButton.style.color = "white";
+    } else if (task.priority === "HIGH") {
+      task.priority = "LOW";
+      priorityButton.style.backgroundColor = "#00ab41";
+      priorityButton.style.color = "white";
+    }
 
-    const dateInput = document.createElement("input");
-    dateInput.type = "date";
-    dateInput.id = "start";
-    dateInput.name = "trip-start";
-    dialogDateStyling.appendChild(dateInput);
+    const projectDom = document.querySelector("#projects");
 
-    const dialogButtons = document.createElement("div");
-    dialogButtons.classList.add('dialog-buttons');
-    dialog.appendChild(dialogButtons);
+    function saveProjectsToLocal() {
+      localStorage.clear();
+      let projectArr = [];
+      for (let i = 0; i < manager.allProjects.length; i++) {
+        let stringProject = manager.allProjects[i];
 
+        projectArr.push(stringProject);
+      }
+      localStorage.setItem("projects", JSON.stringify(projectArr));
+    }
 
-    const dialogEditTaskButton = document.createElement("button");
-    dialogEditTaskButton.classList.add('add-dialog');
-    dialogEditTaskButton.textContent = "Edit Task";
-    dialogButtons.appendChild(dialogEditTaskButton);
+    saveProjectsToLocal();
+    projectDom.innerHTML = "";
+    generateProjects();
+  });
 
+  const priorityDate = document.createElement("div");
+  priorityDate.classList.add("complete-by-text");
+  priorityButton.appendChild(priorityDate);
+  priorityDate.textContent = task.dueDate;
 
-    const dialogCancelButton = document.createElement("button");
-    dialogCancelButton.classList.add('cancel-dialog');
-    dialogCancelButton.textContent = "Cancel";
-    dialogButtons.appendChild(dialogCancelButton);
+  const editCheckButtons = document.createElement("div");
+  editCheckButtons.classList.add("edit-check-buttons");
+  bottomRow.appendChild(editCheckButtons);
 
+  const editButton = document.createElement("div");
+  editButton.classList.add("edit-button");
+  editCheckButtons.appendChild(editButton);
 
-    dialogEditTaskButton.addEventListener('click', () => {
-        let currProject = manager.getActiveProject();
-        
+  const editImage = document.createElement("img");
+  editImage.src = editPath;
+  editImage.alt = "Icon of edit button";
+  editImage.height = 50;
+  editImage.style.width = "auto";
+  editButton.appendChild(editImage);
 
+  const dialog = document.createElement("DIALOG");
+  taskDom.appendChild(dialog);
 
-        let allTasks;
-        let today;
-        let upcoming;
+  const dialogTitleFont = document.createElement("div");
+  dialogTitleFont.classList.add("dialog-font");
+  dialogTitleFont.textContent = "Title";
+  dialog.appendChild(dialogTitleFont);
 
-        for (let i = 0; i < manager.allProjects.length; i++){
-            if (manager.allProjects[i].name === 'All Tasks'){
-                allTasks = manager.allProjects[i];
-            }
-            if (manager.allProjects[i].name === 'Today'){
-                today = manager.allProjects[i];
-            }
+  let dialogTitle = document.createElement("textarea");
+  dialogTitle.name = "task-title";
+  dialogTitle.rows = "1";
+  dialogTitle.cols = "40";
+  dialogTitle.value = task.title;
+  dialog.appendChild(dialogTitle);
 
-            if (manager.allProjects[i].name === 'Upcoming'){
-                upcoming = manager.allProjects[i];
-            }
-        }
+  const dialogDescriptionFont = document.createElement("div");
+  dialogDescriptionFont.classList.add("dialog-font");
+  dialogDescriptionFont.textContent = "Description";
+  dialog.appendChild(dialogDescriptionFont);
 
-        let newDate; 
-        if (dateInput.value){
-            newDate = format(addDays(new Date(dateInput.value), 1), 'EEEE, MMMM dd');
-        }
-        else{
-            newDate = format(new Date(), 'EEEE, MMMM dd');
-        }
+  let dialogDescription = document.createElement("textarea");
+  dialogDescription.name = "task-description";
+  dialogDescription.rows = "3";
+  dialogDescription.cols = "40";
+  dialogDescription.value = task.description;
+  dialog.appendChild(dialogDescription);
 
+  const dialogDateFont = document.createElement("div");
+  dialogDateFont.classList.add("dialog-font");
+  dialogDateFont.textContent = "Complete by";
+  dialog.appendChild(dialogDateFont);
 
-        const newTask = toDo(dialogTitle.value, dialogDescription.value, newDate, task.priority, task.completed);
-        
+  const dialogDateStyling = document.createElement("div");
+  dialogDateStyling.classList.add("dialog-date");
+  dialog.appendChild(dialogDateStyling);
 
-        if (currProject.name !== 'All Tasks' && currProject.name !== 'Today'
-            && currProject.name !== 'Upcoming' && currProject.name !== 'Completed'){
-                currProject.removeToDo(task);
-                currProject.addToDo(newTask);
-            }
-        
+  const dateInput = document.createElement("input");
+  dateInput.type = "date";
+  dateInput.id = "start";
+  dateInput.name = "trip-start";
+  dialogDateStyling.appendChild(dateInput);
 
-        allTasks.removeToDo(task);
-        allTasks.addToDo(newTask);
+  const dialogButtons = document.createElement("div");
+  dialogButtons.classList.add("dialog-buttons");
+  dialog.appendChild(dialogButtons);
 
-        if (manager.getActiveProject() !== today && today && newDate == format(
-            new Date(),
-            'EEEE, MMMM dd'
-          )){
-            today.removeToDo(task);
-            today.addToDo(newTask);
-        }
-        else{
-            upcoming.removeToDo(task);
-            upcoming.addToDo(newTask);
-        }
-        
+  const dialogEditTaskButton = document.createElement("button");
+  dialogEditTaskButton.classList.add("add-dialog");
+  dialogEditTaskButton.textContent = "Edit Task";
+  dialogButtons.appendChild(dialogEditTaskButton);
+
+  const dialogCancelButton = document.createElement("button");
+  dialogCancelButton.classList.add("cancel-dialog");
+  dialogCancelButton.textContent = "Cancel";
+  dialogButtons.appendChild(dialogCancelButton);
+
+  dialogEditTaskButton.addEventListener("click", () => {
+    let currProject = manager.getActiveProject();
+
+    let allTasks;
+    let today;
+    let upcoming;
+
+    for (let i = 0; i < manager.allProjects.length; i++) {
+      if (manager.allProjects[i].name === "All Tasks") {
+        allTasks = manager.allProjects[i];
+      }
+      if (manager.allProjects[i].name === "Today") {
+        today = manager.allProjects[i];
+      }
+
+      if (manager.allProjects[i].name === "Upcoming") {
+        upcoming = manager.allProjects[i];
+      }
+    }
+
+    let newDate;
+    if (dateInput.value) {
+      newDate = format(addDays(new Date(dateInput.value), 1), "EEEE, MMMM dd");
+    } else {
+      newDate = format(new Date(), "EEEE, MMMM dd");
+    }
+
+    const newTask = toDo(
+      dialogTitle.value,
+      dialogDescription.value,
+      newDate,
+      task.priority,
+      task.completed,
+    );
+
+    if (
+      currProject.name !== "All Tasks" &&
+      currProject.name !== "Today" &&
+      currProject.name !== "Upcoming" &&
+      currProject.name !== "Completed"
+    ) {
+      currProject.removeToDo(task);
+      currProject.addToDo(newTask);
+    }
+
+    allTasks.removeToDo(task);
+    allTasks.addToDo(newTask);
+
+    if (
+      manager.getActiveProject() !== today &&
+      today &&
+      newDate == format(new Date(), "EEEE, MMMM dd")
+    ) {
+      today.removeToDo(task);
+      today.addToDo(newTask);
+    } else {
+      upcoming.removeToDo(task);
+      upcoming.addToDo(newTask);
+    }
+
     dialog.close();
     const projectDom = document.querySelector("#projects");
 
-        function saveProjectsToLocal(){
-            localStorage.clear();
-            let projectArr = [];
-            for (let i = 0; i < manager.allProjects.length; i++){
-              let stringProject = (manager.allProjects[i]);
-              
-              projectArr.push(stringProject);
-              }
-              localStorage.setItem('projects', JSON.stringify(projectArr));
-          }
-          
-          saveProjectsToLocal();
-          projectDom.innerHTML = '';
-          generateProjects();
-    })
-    
-    dialogCancelButton.addEventListener('click', () =>{
-        dialog.close();
-    })
+    function saveProjectsToLocal() {
+      localStorage.clear();
+      let projectArr = [];
+      for (let i = 0; i < manager.allProjects.length; i++) {
+        let stringProject = manager.allProjects[i];
 
-    editImage.addEventListener('click', () => {
-        dialog.showModal();
-    })
-    
-    
-    const checkImage = document.createElement("img");
-    if (task.completed === false){
-        checkImage.src = uncheckPath;
+        projectArr.push(stringProject);
+      }
+      localStorage.setItem("projects", JSON.stringify(projectArr));
     }
-    else{
-        checkImage.src = checkPath;
+
+    saveProjectsToLocal();
+    projectDom.innerHTML = "";
+    generateProjects();
+  });
+
+  dialogCancelButton.addEventListener("click", () => {
+    dialog.close();
+  });
+
+  editImage.addEventListener("click", () => {
+    dialog.showModal();
+  });
+
+  const checkImage = document.createElement("img");
+  if (task.completed === false) {
+    checkImage.src = uncheckPath;
+  } else {
+    checkImage.src = checkPath;
+  }
+
+  let completedProject;
+
+  for (let i = 0; i < manager.allProjects.length; i++) {
+    if (manager.allProjects[i].name === "Completed") {
+      completedProject = manager.allProjects[i];
+
+      if (task.completed === true) {
+        if (!completedProject.toDoList.includes(task)) {
+          completedProject.addToDo(task);
+        }
+      } else {
+        completedProject.removeToDo(task);
+      }
+    }
+  }
+
+  checkImage.alt = "Icon of checkbox button";
+  checkImage.height = 50;
+  checkImage.style.width = "auto";
+  editButton.appendChild(checkImage);
+
+  checkImage.addEventListener("click", () => {
+    if (task.completed === true) {
+      task.completed = false;
+      checkImage.src = uncheckPath;
+    } else {
+      task.completed = true;
+      checkImage.src = checkPath;
     }
 
     let completedProject;
 
-        for (let i = 0; i < manager.allProjects.length; i++){
-            if (manager.allProjects[i].name === 'Completed'){
-                completedProject = manager.allProjects[i];
+    for (let i = 0; i < manager.allProjects.length; i++) {
+      if (manager.allProjects[i].name === "Completed") {
+        completedProject = manager.allProjects[i];
 
-                if (task.completed === true){
-                    if (!completedProject.toDoList.includes(task)){
-                        completedProject.addToDo(task); 
-                    }
-                }
-                else{
-                    completedProject.removeToDo(task);
-                }
+        if (task.completed === true) {
+          const projectDom = document.querySelector("#projects");
+          function saveProjectsToLocal() {
+            let projectArr = [];
+            for (let i = 0; i < manager.allProjects.length; i++) {
+              let stringProject = manager.allProjects[i];
+              projectArr.push(stringProject);
+            }
+            localStorage.setItem("projects", JSON.stringify(projectArr));
+          }
+
+          saveProjectsToLocal();
+          projectDom.innerHTML = "";
+          generateProjects();
+        } else {
+          completedProject.removeToDo(task);
+          const projectDom = document.querySelector("#projects");
+          function saveProjectsToLocal() {
+            let projectArr = [];
+            for (let i = 0; i < manager.allProjects.length; i++) {
+              let stringProject = manager.allProjects[i];
+              projectArr.push(stringProject);
+            }
+            localStorage.setItem("projects", JSON.stringify(projectArr));
+          }
+
+          saveProjectsToLocal();
+          projectDom.innerHTML = "";
+          generateProjects();
+        }
+      }
     }
-}
-    
-    checkImage.alt = "Icon of checkbox button";
-    checkImage.height = 50;
-    checkImage.style.width="auto";
-    editButton.appendChild(checkImage);
-
-    
-    checkImage.addEventListener('click', () => {
-        if (task.completed === true){
-            task.completed = false;
-            checkImage.src = uncheckPath;
-            
-        }
-        else{
-            task.completed = true;
-            checkImage.src = checkPath;
-        }
-
-        let completedProject;
-
-        for (let i = 0; i < manager.allProjects.length; i++){
-            if (manager.allProjects[i].name === 'Completed'){
-                completedProject = manager.allProjects[i];
-
-                if (task.completed === true){
-                    const projectDom = document.querySelector("#projects");
-                    function saveProjectsToLocal(){
-                        let projectArr = [];
-                        for (let i = 0; i < manager.allProjects.length; i++){
-                          let stringProject = (manager.allProjects[i]);
-                          projectArr.push(stringProject);
-                          }
-                          localStorage.setItem('projects', JSON.stringify(projectArr));
-                      }
-                      
-                      saveProjectsToLocal();
-                      console.log('dont let your feet stray');
-                      console.log(manager.allProjects);
-                      projectDom.innerHTML = '';
-                      generateProjects();
-                }
-                else{
-                    completedProject.removeToDo(task);
-                    const projectDom = document.querySelector("#projects");
-                    function saveProjectsToLocal(){
-                        let projectArr = [];
-                        for (let i = 0; i < manager.allProjects.length; i++){
-                          let stringProject = (manager.allProjects[i]);
-                          projectArr.push(stringProject);
-                          }
-                          localStorage.setItem('projects', JSON.stringify(projectArr));
-                      }
-                      
-                      saveProjectsToLocal();
-                      console.log('dont let your feet stray');
-                      console.log(manager.allProjects);
-                      projectDom.innerHTML = '';
-                      generateProjects();
-                }
-            }        
-        }
-    })
+  });
 }
