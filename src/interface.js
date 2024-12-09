@@ -475,7 +475,7 @@ export function generateTasks(task){
         let currProject = manager.getActiveProject();
         currProject.removeToDo(task);
 
-        let allTasks;
+    let allTasks;
     let today;
     let upcoming;
 
@@ -491,10 +491,13 @@ export function generateTasks(task){
             upcoming = manager.allProjects[i];
         }
     }
+    
 
-
+        allTasks.removeToDo(task);
         today.removeToDo(task);
         upcoming.removeToDo(task);
+
+
 
 
         function saveProjectsToLocal(){
