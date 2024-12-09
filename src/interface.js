@@ -580,24 +580,6 @@ export function generateTasks(task){
           console.log(manager.allProjects);
           projectDom.innerHTML = '';
           generateProjects();
-
-
-
-        // const projectDom = document.querySelector("#projects");
-        // function saveProjectsToLocal(){
-        //     let projectArr = [];
-        //     for (let i = 0; i < manager.allProjects.length; i++){
-        //       let stringProject = (manager.allProjects[i]);
-        //       projectArr.push(stringProject);
-        //       }
-        //       localStorage.setItem('projects', JSON.stringify(projectArr));
-        //   }
-          
-        //   saveProjectsToLocal();
-        //   console.log('dont let your feet stray');
-        //   console.log(manager.allProjects);
-        //   projectDom.innerHTML = '';
-        //   generateProjects();
 })
     
     const priorityDate = document.createElement("div");
