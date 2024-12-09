@@ -68,9 +68,8 @@ export function generateProjects(){
     
             let allTasks = allTasksProject.toDoList;
     
-            generateAddTaskButton();
             allTasks.forEach((task) => generateTasks(task));
-            
+            generateAddTaskButton();
         }
         
 
@@ -91,9 +90,8 @@ export function generateProjects(){
         let clickedProjectTasks = manager.allProjects[i].toDoList;
 
         if (clickedProjectTasks.length > 0){
-            generateAddTaskButton();
             clickedProjectTasks.forEach((task) => generateTasks(task));
-            
+            generateAddTaskButton();
             if (manager.getActiveProject().name !== 'Upcoming' && manager.getActiveProject().name !== 'Completed'
         && manager.getActiveProject().name !== 'All Tasks' && manager.getActiveProject().name !== 'Today'){
             genereateDeleteProjectButton();
