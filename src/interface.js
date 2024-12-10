@@ -456,19 +456,22 @@ export function generateTasks(task) {
     for (let i = 0; i < manager.allProjects.length; i++) {
       if (manager.allProjects[i].name === "All Tasks") {
         allTasks = manager.allProjects[i];
+        allTasks.removeToDo(task);
       }
       if (manager.allProjects[i].name === "Today") {
         today = manager.allProjects[i];
+        today.removeToDo(task);
       }
 
       if (manager.allProjects[i].name === "Upcoming") {
         upcoming = manager.allProjects[i];
+        upcoming.removeToDo(task);
       }
     }
 
-    allTasks.removeToDo(task);
-    today.removeToDo(task);
-    upcoming.removeToDo(task);
+    
+    
+    
 
     function saveProjectsToLocal() {
       let projectArr = [];
